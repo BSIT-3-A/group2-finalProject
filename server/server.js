@@ -4,11 +4,13 @@ const cors = require('cors');
 const dns = require('dns');
 require('dotenv').config();
 
-// Override Node's default DNS resolution to use Google DNS for MongoDB SRV queries
-try {
-  dns.setServers(['8.8.8.8', '8.8.4.4']);
-} catch (err) {
-  console.log('[DNS] Note on custom DNS servers:', err.message);
+// Override Node's default DNS resolution only when running locally (not on Vercel cloud)
+if (!process.env.VERCEL) {
+  try {
+    dns.setServers(['8.8.8.8', '8.8.4.4']);
+  } catch (err) {
+    console.log('[DNS] Note on custom DNS servers:', err.message);
+  }
 }
 
 const app = express();
@@ -599,7 +601,12 @@ app.use((req, res) => {
   res.status(404).json({ success: false, message: `Route ${req.originalUrl} not found on CM HelpHub server` });
 });
 
-app.listen(PORT, () => {
-  console.log(`[CM HelpHub Server] Running on http://localhost:${PORT}`);
-  console.log(`[API Base Route] http://localhost:${PORT}/api/helphub`);
-});
+// Start local server when run directly (node server.js / nodemon), and export app for Vercel
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`[CM HelpHub Server] Running on http://localhost:${PORT}`);
+    console.log(`[API Base Route] http://localhost:${PORT}/api/helphub`);
+  });
+}
+
+module.exports = app;
