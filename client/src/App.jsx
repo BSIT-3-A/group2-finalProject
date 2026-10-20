@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
+import cmLogo from '../cm.jpg';
 
 // --- INITIAL FALLBACK DATA ---
 const INITIAL_OFFICES = [
@@ -239,45 +240,49 @@ export default function App() {
   ];
 
   return (
-    <div className="min-h-screen bg-slate-50/80 text-slate-800 flex flex-col font-sans selection:bg-indigo-600 selection:text-white">
+    <div className="min-h-screen bg-[#F4F8F6] text-slate-800 flex flex-col font-sans selection:bg-[#3C8B5C] selection:text-white">
       {/* FLOATING TOAST NOTIFICATION */}
       {toast && (
-        <div className="fixed bottom-6 right-6 z-50 flex items-center gap-3 px-5 py-3.5 rounded-2xl shadow-2xl border backdrop-blur-md transition-all duration-300 bg-slate-900/95 text-white border-slate-700/80">
+        <div className="fixed bottom-6 right-6 z-50 flex items-center gap-3 px-5 py-3.5 rounded-2xl shadow-2xl border backdrop-blur-md transition-all duration-300 bg-[#0A3520]/95 text-white border-[#3C8B5C]/80">
           <span className={`w-2.5 h-2.5 rounded-full ${toast.type === "error" ? "bg-rose-500" : "bg-emerald-400"} animate-ping`} />
           <span className="text-sm font-medium">{toast.message}</span>
-          <button onClick={() => setToast(null)} className="text-slate-400 hover:text-white ml-2">
+          <button onClick={() => setToast(null)} className="text-[#3C8B5C] hover:text-white ml-2">
             <Icons.X />
           </button>
         </div>
       )}
 
-      {/* MODERN GLASSMORPHIC HEADER NAVBAR */}
-      <header className="bg-slate-950/90 backdrop-blur-xl text-white border-b border-slate-800/80 sticky top-0 z-40 shadow-lg shadow-slate-950/5">
+      {/* MODERN NAVBAR WITH CUSTOM PALETTE */}
+      <header className="bg-[#0A3520] backdrop-blur-xl text-white border-b border-[#0E4A2C] sticky top-0 z-40 shadow-xl">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-20">
-            {/* BRAND LOGO */}
+            {/* BRAND LOGO REDUCED BY 50% */}
             <div 
-              className="flex items-center space-x-3.5 cursor-pointer group" 
+              className="flex items-center space-x-3 cursor-pointer group" 
               onClick={() => setActiveTab("home")}
             >
-              <div className="bg-gradient-to-br from-amber-400 via-amber-500 to-orange-500 text-slate-950 font-black p-2.5 rounded-2xl flex items-center justify-center w-11 h-11 shadow-lg shadow-amber-500/20 group-hover:scale-105 transition-transform">
-                <span className="text-lg tracking-tighter">CM</span>
+              <div className="w-10 h-10 rounded-xl bg-white p-0.5 shadow-md shadow-[#0A3520] group-hover:scale-105 transition-transform flex items-center justify-center overflow-hidden border border-[#3C8B5C]">
+                <img 
+                  src={cmLogo} 
+                  alt="College of Maasin Seal" 
+                  className="w-8 h-8 object-contain"
+                />
               </div>
               <div>
                 <div className="flex items-center gap-2">
-                  <span className="font-extrabold text-xl tracking-tight bg-gradient-to-r from-white via-slate-100 to-slate-300 bg-clip-text text-transparent">
-                    HelpHub
+                  <span className="font-extrabold text-lg tracking-tight text-white">
+                    CM HelpHub
                   </span>
-                  <span className="text-[10px] font-bold uppercase tracking-widest px-2 py-0.5 rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">
+                  <span className="text-[9px] font-bold uppercase tracking-widest px-2 py-0.5 rounded-full bg-[#3C8B5C]/30 text-emerald-200 border border-[#3C8B5C]/50">
                     Portal
                   </span>
                 </div>
-                <div className="text-xs text-slate-400 font-medium">College of Maasin Information System</div>
+                <div className="text-[11px] text-emerald-300/80 font-medium">College of Maasin</div>
               </div>
             </div>
 
             {/* DESKTOP NAVIGATION PILLS */}
-            <nav className="hidden lg:flex items-center space-x-1.5 bg-slate-900/90 p-1.5 rounded-2xl border border-slate-800/90">
+            <nav className="hidden lg:flex items-center space-x-1.5 bg-[#0E4A2C] p-1.5 rounded-2xl border border-[#17663D]">
               {navItems.map((item) => (
                 <button
                   key={item.id}
@@ -285,11 +290,11 @@ export default function App() {
                   className={`px-4 py-2 rounded-xl text-xs font-semibold transition-all duration-200 flex items-center gap-1.5 ${
                     activeTab === item.id
                       ? item.isSpecial
-                        ? "bg-gradient-to-r from-amber-500 to-orange-500 text-slate-950 font-bold shadow-md shadow-amber-500/20"
-                        : "bg-indigo-600 text-white shadow-md shadow-indigo-600/25"
+                        ? "bg-gradient-to-r from-amber-400 to-amber-500 text-slate-950 font-extrabold shadow-md shadow-amber-500/20"
+                        : "bg-[#3C8B5C] text-white shadow-md shadow-[#17663D]/50"
                       : item.isSpecial
-                      ? "text-amber-400 hover:bg-slate-800/70"
-                      : "text-slate-300 hover:text-white hover:bg-slate-800/60"
+                      ? "text-amber-300 hover:bg-[#17663D]/70"
+                      : "text-emerald-100 hover:text-white hover:bg-[#17663D]/60"
                   }`}
                 >
                   {item.isSpecial && <Icons.Sparkles />}
@@ -301,13 +306,13 @@ export default function App() {
             {/* ADMIN STATUS / LOGIN BUTTON */}
             <div className="flex items-center space-x-3">
               {isAdmin ? (
-                <div className="flex items-center gap-2 bg-emerald-950/90 border border-emerald-500/40 pl-3 pr-2 py-1.5 rounded-2xl text-emerald-300 text-xs shadow-inner">
+                <div className="flex items-center gap-2 bg-[#0E4A2C] border border-[#3C8B5C] pl-3 pr-2 py-1.5 rounded-2xl text-emerald-200 text-xs shadow-inner">
                   <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
                   <span className="font-bold tracking-wide hidden sm:inline">Admin</span>
                   <button
                     onClick={() => setActiveTab("admin")}
                     className={`px-2.5 py-1 rounded-lg font-bold transition ${
-                      activeTab === "admin" ? "bg-emerald-500 text-slate-950" : "bg-emerald-900/60 hover:bg-emerald-800 text-white"
+                      activeTab === "admin" ? "bg-[#3C8B5C] text-white" : "bg-[#0A3520] hover:bg-[#17663D] text-white"
                     }`}
                   >
                     Dashboard
@@ -320,7 +325,7 @@ export default function App() {
                       if (activeTab === "admin") setActiveTab("home");
                       showToast("Logged out of Admin Mode", "success");
                     }}
-                    className="text-slate-400 hover:text-rose-400 px-1.5 py-1 transition font-semibold"
+                    className="text-emerald-300 hover:text-rose-300 px-1.5 py-1 transition font-semibold"
                     title="Exit Admin Mode"
                   >
                     Exit
@@ -329,7 +334,7 @@ export default function App() {
               ) : (
                 <button
                   onClick={() => setShowAdminModal(true)}
-                  className="text-xs font-semibold bg-slate-900 hover:bg-slate-800 border border-slate-700/80 text-slate-200 px-4 py-2.5 rounded-xl transition flex items-center gap-2 shadow-sm hover:border-slate-600"
+                  className="text-xs font-semibold bg-[#0E4A2C] hover:bg-[#17663D] border border-[#3C8B5C] text-emerald-100 px-4 py-2.5 rounded-xl transition flex items-center gap-2 shadow-sm"
                 >
                   <Icons.Lock />
                   <span>Staff Portal</span>
@@ -340,7 +345,7 @@ export default function App() {
         </div>
 
         {/* MOBILE NAVIGATION BAR */}
-        <div className="lg:hidden flex overflow-x-auto border-t border-slate-800/80 bg-slate-900/60 px-4 py-2.5 gap-2 no-scrollbar">
+        <div className="lg:hidden flex overflow-x-auto border-t border-[#0E4A2C] bg-[#0E4A2C] px-4 py-2.5 gap-2 no-scrollbar">
           {navItems.map((item) => (
             <button
               key={item.id}
@@ -348,9 +353,9 @@ export default function App() {
               className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition flex items-center gap-1 ${
                 activeTab === item.id
                   ? item.isSpecial
-                    ? "bg-amber-500 text-slate-950 font-bold"
-                    : "bg-indigo-600 text-white"
-                  : "text-slate-300 bg-slate-800/50"
+                    ? "bg-amber-400 text-slate-950 font-bold"
+                    : "bg-[#3C8B5C] text-white"
+                  : "text-emerald-200 bg-[#0A3520]"
               }`}
             >
               {item.isSpecial && <Icons.Sparkles />}
@@ -417,21 +422,21 @@ export default function App() {
         )}
       </main>
 
-      {/* MODERN FOOTER */}
-      <footer className="bg-slate-950 text-slate-400 border-t border-slate-800/80 mt-16">
+      {/* FOOTER */}
+      <footer className="bg-[#0A3520] text-emerald-200/80 border-t border-[#0E4A2C] mt-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
             <div className="md:col-span-2 space-y-3">
               <div className="flex items-center space-x-3">
-                <div className="bg-amber-500 text-slate-950 font-black p-2 rounded-xl w-9 h-9 flex items-center justify-center">
-                  CM
+                <div className="w-8 h-8 rounded-xl bg-white flex items-center justify-center overflow-hidden border border-[#3C8B5C]">
+                  <img src={cmLogo} alt="CM Seal" className="w-6 h-6 object-contain" />
                 </div>
-                <span className="text-white font-bold text-lg">CM HelpHub Portal</span>
+                <span className="text-white font-bold text-base">CM HelpHub Portal</span>
               </div>
-              <p className="text-xs text-slate-400 max-w-md leading-relaxed">
+              <p className="text-xs text-emerald-300/80 max-w-md leading-relaxed">
                 An AI-Integrated Web-Based Student Assistance and Campus Information System engineered for the students, faculty, and administration of the College of Maasin.
               </p>
-              <div className="text-[11px] text-slate-500 pt-1">
+              <div className="text-[11px] text-emerald-400/70 pt-1">
                 📍 Tunga-Tunga, Maasin City, Southern Leyte, Philippines
               </div>
             </div>
@@ -439,16 +444,16 @@ export default function App() {
             <div>
               <h4 className="text-white font-bold text-xs uppercase tracking-wider mb-3">Quick Links</h4>
               <ul className="space-y-2 text-xs">
-                <li><button onClick={() => setActiveTab("offices")} className="hover:text-amber-400 transition">Campus Office Directory</button></li>
-                <li><button onClick={() => setActiveTab("faqs")} className="hover:text-amber-400 transition">Verified Campus FAQs</button></li>
-                <li><button onClick={() => setActiveTab("bulletin")} className="hover:text-amber-400 transition">Announcements & Events</button></li>
-                <li><button onClick={() => setActiveTab("concern")} className="hover:text-amber-400 transition">Submit & Track Concern</button></li>
+                <li><button onClick={() => setActiveTab("offices")} className="hover:text-amber-300 transition">Campus Office Directory</button></li>
+                <li><button onClick={() => setActiveTab("faqs")} className="hover:text-amber-300 transition">Verified Campus FAQs</button></li>
+                <li><button onClick={() => setActiveTab("bulletin")} className="hover:text-amber-300 transition">Announcements & Events</button></li>
+                <li><button onClick={() => setActiveTab("concern")} className="hover:text-amber-300 transition">Submit & Track Concern</button></li>
               </ul>
             </div>
 
             <div>
               <h4 className="text-white font-bold text-xs uppercase tracking-wider mb-3">Group 2 Developers</h4>
-              <ul className="space-y-1.5 text-xs text-slate-400 font-medium">
+              <ul className="space-y-1.5 text-xs text-emerald-300/80 font-medium">
                 <li>• Layo, Megan</li>
                 <li>• Calapre, Josh</li>
                 <li>• Gozo, Erick</li>
@@ -457,10 +462,10 @@ export default function App() {
             </div>
           </div>
 
-          <div className="border-t border-slate-800/80 pt-6 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-4">
+          <div className="border-t border-[#0E4A2C] pt-6 flex flex-col sm:flex-row items-center justify-between text-xs text-emerald-400/70 gap-4">
             <div>© 2026 College of Maasin — CM HelpHub. All rights reserved.</div>
             <div className="flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
+              <span className="w-2 h-2 rounded-full bg-emerald-400"></span>
               <span>Powered by React, Express & MongoDB Atlas</span>
             </div>
           </div>
@@ -478,7 +483,7 @@ export default function App() {
               <Icons.X />
             </button>
             <div className="flex items-center space-x-3.5 mb-5">
-              <div className="p-3.5 bg-indigo-50 text-indigo-600 rounded-2xl border border-indigo-100">
+              <div className="p-3.5 bg-emerald-50 text-[#17663D] rounded-2xl border border-emerald-100">
                 <Icons.Shield />
               </div>
               <div>
@@ -494,7 +499,7 @@ export default function App() {
                   value={passcodeInput}
                   onChange={(e) => setPasscodeInput(e.target.value)}
                   placeholder="Enter passcode (default: admin123)"
-                  className="w-full px-4 py-3 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:border-transparent transition"
+                  className="w-full px-4 py-3 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#3C8B5C] focus:border-transparent transition"
                   autoFocus
                 />
               </div>
@@ -508,7 +513,7 @@ export default function App() {
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold shadow-md shadow-indigo-600/20 transition"
+                  className="px-5 py-2.5 bg-[#17663D] hover:bg-[#0E4A2C] text-white rounded-xl text-xs font-bold shadow-md shadow-[#17663D]/20 transition"
                 >
                   Unlock Dashboard
                 </button>
@@ -536,40 +541,39 @@ function HomeView({ offices, faqs, announcements, events, setActiveTab, setGloba
 
   return (
     <div className="space-y-10">
-      {/* MODERN HERO SECTION */}
-      <div className="relative overflow-hidden rounded-3xl bg-slate-950 text-white p-8 sm:p-12 lg:p-14 shadow-2xl border border-slate-800">
-        {/* Decorative Gradient Glows */}
-        <div className="absolute -top-24 -right-24 w-96 h-96 bg-indigo-600/30 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute -bottom-24 -left-24 w-96 h-96 bg-amber-500/20 rounded-full blur-3xl pointer-events-none" />
+      {/* HERO SECTION WITH CUSTOM GRADIENT PALETTE */}
+      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#0A3520] via-[#0E4A2C] to-[#17663D] text-white p-8 sm:p-12 lg:p-14 shadow-2xl border border-[#3C8B5C]/30">
+        <div className="absolute -top-24 -right-24 w-96 h-96 bg-[#3C8B5C]/20 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute -bottom-24 -left-24 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
 
         <div className="relative z-10 max-w-3xl space-y-6">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 border border-white/15 backdrop-blur-md text-amber-300 text-xs font-semibold">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 border border-white/15 backdrop-blur-md text-emerald-200 text-xs font-semibold">
             <Icons.Sparkles />
             <span>College of Maasin Smart Campus Portal</span>
           </div>
 
           <h1 className="text-3xl sm:text-5xl font-black tracking-tight leading-[1.15]">
             Fast, verified answers for{" "}
-            <span className="bg-gradient-to-r from-amber-400 via-amber-300 to-orange-400 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-amber-300 via-amber-200 to-orange-300 bg-clip-text text-transparent">
               every student need.
             </span>
           </h1>
 
-          <p className="text-slate-300 text-sm sm:text-base max-w-2xl leading-relaxed">
+          <p className="text-emerald-100/90 text-sm sm:text-base max-w-2xl leading-relaxed">
             Explore official campus office directories, academic requirements, real-time announcements, or ask our AI assistant grounded in verified school records.
           </p>
 
           {/* HERO SEARCH BAR */}
           <form onSubmit={handleSearch} className="pt-2">
             <div className="flex flex-col sm:flex-row gap-2.5 bg-white/10 p-2 rounded-2xl border border-white/15 backdrop-blur-md max-w-2xl">
-              <div className="flex-1 flex items-center pl-3 text-slate-300">
+              <div className="flex-1 flex items-center pl-3 text-emerald-200">
                 <Icons.Search />
                 <input
                   type="text"
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   placeholder="Search TOR, tuition fees, office hours, clearance..."
-                  className="w-full bg-transparent px-3 py-2.5 text-white placeholder-slate-400 text-sm focus:outline-none"
+                  className="w-full bg-transparent px-3 py-2.5 text-white placeholder-emerald-200/60 text-sm focus:outline-none"
                 />
               </div>
               <button
@@ -583,7 +587,7 @@ function HomeView({ offices, faqs, announcements, events, setActiveTab, setGloba
 
           {/* QUICK FILTER PILLS */}
           <div className="flex flex-wrap items-center gap-2 pt-1">
-            <span className="text-xs text-slate-400 font-medium mr-1">Popular:</span>
+            <span className="text-xs text-emerald-200/80 font-medium mr-1">Popular:</span>
             {quickTags.map((tag) => (
               <button
                 key={tag}
@@ -591,7 +595,7 @@ function HomeView({ offices, faqs, announcements, events, setActiveTab, setGloba
                   setGlobalSearch(tag);
                   setActiveTab("faqs");
                 }}
-                className="text-xs bg-slate-900/90 hover:bg-indigo-600/80 text-slate-300 hover:text-white px-3 py-1.5 rounded-xl border border-slate-700/80 transition"
+                className="text-xs bg-[#0A3520]/80 hover:bg-[#3C8B5C] text-emerald-100 px-3 py-1.5 rounded-xl border border-[#3C8B5C]/50 transition"
               >
                 {tag}
               </button>
@@ -604,10 +608,10 @@ function HomeView({ offices, faqs, announcements, events, setActiveTab, setGloba
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
         <div
           onClick={() => setActiveTab("offices")}
-          className="group bg-white p-6 rounded-3xl border border-slate-200/80 shadow-sm hover:shadow-xl hover:border-indigo-200 transition-all duration-300 cursor-pointer flex flex-col justify-between"
+          className="group bg-white p-6 rounded-3xl border border-slate-200/80 shadow-sm hover:shadow-xl hover:border-[#3C8B5C] transition-all duration-300 cursor-pointer flex flex-col justify-between"
         >
           <div>
-            <div className="w-12 h-12 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center mb-4 group-hover:bg-indigo-600 group-hover:text-white transition-colors">
+            <div className="w-12 h-12 rounded-2xl bg-[#0A3520]/5 text-[#17663D] flex items-center justify-center mb-4 group-hover:bg-[#17663D] group-hover:text-white transition-colors">
               <Icons.Building />
             </div>
             <h3 className="font-extrabold text-slate-900 text-lg">Office Directory</h3>
@@ -615,7 +619,7 @@ function HomeView({ offices, faqs, announcements, events, setActiveTab, setGloba
               Locations, operating hours, and direct contact channels.
             </p>
           </div>
-          <div className="mt-5 pt-3 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-indigo-600">
+          <div className="mt-5 pt-3 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-[#17663D]">
             <span>{offices.filter(o => o.isPublished !== false).length} Active Offices</span>
             <span className="group-hover:translate-x-1 transition-transform"><Icons.ArrowRight /></span>
           </div>
@@ -623,10 +627,10 @@ function HomeView({ offices, faqs, announcements, events, setActiveTab, setGloba
 
         <div
           onClick={() => setActiveTab("faqs")}
-          className="group bg-white p-6 rounded-3xl border border-slate-200/80 shadow-sm hover:shadow-xl hover:border-emerald-200 transition-all duration-300 cursor-pointer flex flex-col justify-between"
+          className="group bg-white p-6 rounded-3xl border border-slate-200/80 shadow-sm hover:shadow-xl hover:border-[#3C8B5C] transition-all duration-300 cursor-pointer flex flex-col justify-between"
         >
           <div>
-            <div className="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center mb-4 group-hover:bg-emerald-600 group-hover:text-white transition-colors">
+            <div className="w-12 h-12 rounded-2xl bg-[#0A3520]/5 text-[#17663D] flex items-center justify-center mb-4 group-hover:bg-[#17663D] group-hover:text-white transition-colors">
               <Icons.HelpCircle />
             </div>
             <h3 className="font-extrabold text-slate-900 text-lg">Verified FAQs</h3>
@@ -634,7 +638,7 @@ function HomeView({ offices, faqs, announcements, events, setActiveTab, setGloba
               Step-by-step guides on TOR, enrollment, and payments.
             </p>
           </div>
-          <div className="mt-5 pt-3 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-emerald-600">
+          <div className="mt-5 pt-3 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-[#17663D]">
             <span>{faqs.filter(f => f.isPublished !== false).length} Solutions Ready</span>
             <span className="group-hover:translate-x-1 transition-transform"><Icons.ArrowRight /></span>
           </div>
@@ -642,10 +646,10 @@ function HomeView({ offices, faqs, announcements, events, setActiveTab, setGloba
 
         <div
           onClick={() => setActiveTab("concern")}
-          className="group bg-white p-6 rounded-3xl border border-slate-200/80 shadow-sm hover:shadow-xl hover:border-amber-200 transition-all duration-300 cursor-pointer flex flex-col justify-between"
+          className="group bg-white p-6 rounded-3xl border border-slate-200/80 shadow-sm hover:shadow-xl hover:border-[#3C8B5C] transition-all duration-300 cursor-pointer flex flex-col justify-between"
         >
           <div>
-            <div className="w-12 h-12 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center mb-4 group-hover:bg-amber-500 group-hover:text-slate-950 transition-colors">
+            <div className="w-12 h-12 rounded-2xl bg-[#0A3520]/5 text-[#17663D] flex items-center justify-center mb-4 group-hover:bg-[#17663D] group-hover:text-white transition-colors">
               <Icons.Send />
             </div>
             <h3 className="font-extrabold text-slate-900 text-lg">Concern Desk</h3>
@@ -653,7 +657,7 @@ function HomeView({ offices, faqs, announcements, events, setActiveTab, setGloba
               Submit inquiries & track status with a reference code.
             </p>
           </div>
-          <div className="mt-5 pt-3 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-amber-600">
+          <div className="mt-5 pt-3 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-[#17663D]">
             <span>Submit & Track</span>
             <span className="group-hover:translate-x-1 transition-transform"><Icons.ArrowRight /></span>
           </div>
@@ -661,36 +665,35 @@ function HomeView({ offices, faqs, announcements, events, setActiveTab, setGloba
 
         <div
           onClick={() => setActiveTab("assistant")}
-          className="group bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 text-white p-6 rounded-3xl border border-indigo-800/60 shadow-md hover:shadow-xl transition-all duration-300 cursor-pointer flex flex-col justify-between"
+          className="group bg-gradient-to-br from-[#0A3520] via-[#0E4A2C] to-[#17663D] text-white p-6 rounded-3xl border border-[#3C8B5C]/40 shadow-md hover:shadow-xl transition-all duration-300 cursor-pointer flex flex-col justify-between"
         >
           <div>
             <div className="w-12 h-12 rounded-2xl bg-amber-400/20 text-amber-300 border border-amber-400/30 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
               <Icons.Sparkles />
             </div>
             <h3 className="font-extrabold text-white text-lg">CM AI Assistant</h3>
-            <p className="text-xs text-indigo-200 mt-1 leading-relaxed">
+            <p className="text-xs text-emerald-200 mt-1 leading-relaxed">
               Instant Q&A grounded strictly in verified campus data.
             </p>
           </div>
-          <div className="mt-5 pt-3 border-t border-indigo-800/60 flex items-center justify-between text-xs font-bold text-amber-300">
+          <div className="mt-5 pt-3 border-t border-[#3C8B5C]/40 flex items-center justify-between text-xs font-bold text-amber-300">
             <span>Ask AI Now</span>
             <span className="group-hover:translate-x-1 transition-transform"><Icons.ArrowRight /></span>
           </div>
         </div>
       </div>
 
-      {/* LOWER SPLIT SECTION: BULLETINS, EVENTS & POPULAR FAQS */}
+      {/* LOWER SPLIT SECTION */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* LEFT 2 COLUMNS: ANNOUNCEMENTS & UPCOMING EVENTS */}
         <div className="lg:col-span-2 space-y-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2.5">
-              <div className="p-2 rounded-xl bg-indigo-100 text-indigo-700"><Icons.Bell /></div>
+              <div className="p-2 rounded-xl bg-[#0A3520]/10 text-[#17663D]"><Icons.Bell /></div>
               <h2 className="text-xl font-extrabold text-slate-900">Latest Campus Bulletins</h2>
             </div>
             <button
               onClick={() => setActiveTab("bulletin")}
-              className="text-xs font-bold text-indigo-600 hover:text-indigo-800 flex items-center gap-1"
+              className="text-xs font-bold text-[#17663D] hover:text-[#0A3520] flex items-center gap-1"
             >
               <span>View All</span>
               <Icons.ArrowRight />
@@ -704,7 +707,7 @@ function HomeView({ offices, faqs, announcements, events, setActiveTab, setGloba
                 className="bg-white p-6 rounded-3xl border border-slate-200/80 shadow-sm hover:shadow-md transition"
               >
                 <div className="flex items-center justify-between mb-2.5">
-                  <span className="text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-100">
+                  <span className="text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-[#0A3520]/10 text-[#0A3520] border border-[#3C8B5C]/30">
                     {ann.category || "Notice"}
                   </span>
                   <span className="text-xs text-slate-400 font-medium">{ann.publishDate}</span>
@@ -716,13 +719,13 @@ function HomeView({ offices, faqs, announcements, events, setActiveTab, setGloba
           </div>
 
           {/* UPCOMING EVENTS BANNER */}
-          <div className="bg-gradient-to-r from-indigo-950 via-slate-900 to-indigo-950 text-white p-7 rounded-3xl shadow-lg border border-indigo-900/60">
+          <div className="bg-gradient-to-r from-[#0A3520] via-[#0E4A2C] to-[#17663D] text-white p-7 rounded-3xl shadow-lg border border-[#3C8B5C]/40">
             <div className="flex items-center justify-between mb-5">
               <div className="flex items-center gap-2.5 text-amber-300 font-bold text-base">
                 <Icons.Calendar />
                 <span>Upcoming Campus Events</span>
               </div>
-              <button onClick={() => setActiveTab("bulletin")} className="text-xs text-indigo-200 hover:text-white underline">
+              <button onClick={() => setActiveTab("bulletin")} className="text-xs text-emerald-200 hover:text-white underline">
                 Full Calendar
               </button>
             </div>
@@ -738,7 +741,7 @@ function HomeView({ offices, faqs, announcements, events, setActiveTab, setGloba
                     </span>
                     <h4 className="font-bold text-white text-sm leading-snug">{evt.eventTitle}</h4>
                   </div>
-                  <div className="text-xs text-slate-300 flex items-center gap-1.5 pt-2 border-t border-white/10">
+                  <div className="text-xs text-emerald-200 flex items-center gap-1.5 pt-2 border-t border-white/10">
                     <Icons.Pin />
                     <span className="truncate">{evt.venue}</span>
                   </div>
@@ -748,11 +751,11 @@ function HomeView({ offices, faqs, announcements, events, setActiveTab, setGloba
           </div>
         </div>
 
-        {/* RIGHT COLUMN: TOP FAQS & QUICK CONTACTS */}
+        {/* RIGHT COLUMN */}
         <div className="space-y-6">
           <div className="bg-white p-6 rounded-3xl border border-slate-200/80 shadow-sm">
             <h3 className="font-extrabold text-slate-900 text-base mb-4 flex items-center gap-2">
-              <span className="text-emerald-600"><Icons.HelpCircle /></span>
+              <span className="text-[#17663D]"><Icons.HelpCircle /></span>
               <span>Frequently Asked</span>
             </h3>
             <div className="space-y-2.5">
@@ -763,12 +766,12 @@ function HomeView({ offices, faqs, announcements, events, setActiveTab, setGloba
                     setGlobalSearch(f.question);
                     setActiveTab("faqs");
                   }}
-                  className="p-3.5 rounded-2xl bg-slate-50 hover:bg-indigo-50/70 border border-slate-100 hover:border-indigo-100 cursor-pointer transition group"
+                  className="p-3.5 rounded-2xl bg-slate-50 hover:bg-[#0A3520]/5 border border-slate-100 hover:border-[#3C8B5C]/40 cursor-pointer transition group"
                 >
-                  <div className="text-[10px] font-bold uppercase tracking-wider text-indigo-600 mb-1">
+                  <div className="text-[10px] font-bold uppercase tracking-wider text-[#17663D] mb-1">
                     {f.category}
                   </div>
-                  <div className="text-xs font-bold text-slate-800 group-hover:text-indigo-950 line-clamp-2">
+                  <div className="text-xs font-bold text-slate-800 group-hover:text-[#0A3520] line-clamp-2">
                     {f.question}
                   </div>
                 </div>
@@ -778,7 +781,7 @@ function HomeView({ offices, faqs, announcements, events, setActiveTab, setGloba
 
           <div className="bg-white p-6 rounded-3xl border border-slate-200/80 shadow-sm">
             <h3 className="font-extrabold text-slate-900 text-base mb-4 flex items-center gap-2">
-              <span className="text-indigo-600"><Icons.Building /></span>
+              <span className="text-[#17663D]"><Icons.Building /></span>
               <span>Key Hotlines</span>
             </h3>
             <div className="space-y-3">
@@ -786,7 +789,7 @@ function HomeView({ offices, faqs, announcements, events, setActiveTab, setGloba
                 <div key={o._id || o.id} className="p-3 rounded-2xl bg-slate-50 border border-slate-100 text-xs">
                   <div className="font-bold text-slate-900">{o.officeName}</div>
                   <div className="text-slate-500 mt-0.5 truncate">{o.location}</div>
-                  <div className="text-indigo-600 font-semibold mt-1">{o.contactEmail}</div>
+                  <div className="text-[#17663D] font-semibold mt-1">{o.contactEmail}</div>
                 </div>
               ))}
             </div>
@@ -810,7 +813,7 @@ function OfficesView({ offices, globalSearch, setGlobalSearch, setActiveTab }) {
     <div className="space-y-8">
       <div className="bg-white p-7 rounded-3xl border border-slate-200/80 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <span className="text-xs font-bold uppercase tracking-widest text-indigo-600">Campus Directory</span>
+          <span className="text-xs font-bold uppercase tracking-widest text-[#17663D]">Campus Directory</span>
           <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-0.5">Administrative & Academic Offices</h1>
           <p className="text-slate-500 text-sm mt-1">Find official building locations, operating schedules, and direct emails.</p>
         </div>
@@ -823,7 +826,7 @@ function OfficesView({ offices, globalSearch, setGlobalSearch, setActiveTab }) {
             value={globalSearch}
             onChange={(e) => setGlobalSearch(e.target.value)}
             placeholder="Search office or service..."
-            className="w-full pl-10 pr-9 py-2.5 bg-slate-50 border border-slate-200 rounded-2xl text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-600 transition"
+            className="w-full pl-10 pr-9 py-2.5 bg-slate-50 border border-slate-200 rounded-2xl text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#3C8B5C] transition"
           />
           {globalSearch && (
             <button
@@ -843,7 +846,7 @@ function OfficesView({ offices, globalSearch, setGlobalSearch, setActiveTab }) {
           {globalSearch && (
             <button
               onClick={() => setGlobalSearch("")}
-              className="mt-2 px-4 py-2 bg-indigo-50 text-indigo-700 font-bold text-xs rounded-xl"
+              className="mt-2 px-4 py-2 bg-[#0A3520]/10 text-[#0A3520] font-bold text-xs rounded-xl"
             >
               Reset Filter
             </button>
@@ -866,12 +869,12 @@ function OfficesView({ offices, globalSearch, setGlobalSearch, setActiveTab }) {
                 <div className="space-y-4">
                   <div className="flex items-start justify-between gap-3">
                     <div className="flex items-center gap-3">
-                      <div className="p-3 rounded-2xl bg-indigo-50 text-indigo-600 border border-indigo-100">
+                      <div className="p-3 rounded-2xl bg-[#0A3520]/10 text-[#17663D] border border-[#3C8B5C]/20">
                         <Icons.Building />
                       </div>
                       <h2 className="text-xl font-extrabold text-slate-900">{o.officeName}</h2>
                     </div>
-                    <span className="bg-emerald-50 text-emerald-700 border border-emerald-200 text-[11px] font-bold px-3 py-1 rounded-full whitespace-nowrap">
+                    <span className="bg-emerald-50 text-[#17663D] border border-[#3C8B5C]/30 text-[11px] font-bold px-3 py-1 rounded-full whitespace-nowrap">
                       Verified
                     </span>
                   </div>
@@ -880,26 +883,26 @@ function OfficesView({ offices, globalSearch, setGlobalSearch, setActiveTab }) {
 
                   <div className="bg-slate-50/90 p-4 rounded-2xl border border-slate-100 space-y-2.5 text-xs">
                     <div className="flex items-center gap-2.5 text-slate-700">
-                      <span className="text-indigo-600"><Icons.Pin /></span>
+                      <span className="text-[#17663D]"><Icons.Pin /></span>
                       <span className="font-bold text-slate-900">Location:</span>
                       <span>{o.location}</span>
                     </div>
                     <div className="flex items-center gap-2.5 text-slate-700">
-                      <span className="text-indigo-600"><Icons.Mail /></span>
+                      <span className="text-[#17663D]"><Icons.Mail /></span>
                       <span className="font-bold text-slate-900">Email:</span>
-                      <a href={`mailto:${o.contactEmail}`} className="text-indigo-600 font-semibold hover:underline">
+                      <a href={`mailto:${o.contactEmail}`} className="text-[#17663D] font-semibold hover:underline">
                         {o.contactEmail}
                       </a>
                     </div>
                     {o.contactNumber && (
                       <div className="flex items-center gap-2.5 text-slate-700">
-                        <span className="text-indigo-600"><Icons.Phone /></span>
+                        <span className="text-[#17663D]"><Icons.Phone /></span>
                         <span className="font-bold text-slate-900">Phone:</span>
                         <span>{o.contactNumber}</span>
                       </div>
                     )}
                     <div className="flex items-center gap-2.5 text-slate-700">
-                      <span className="text-indigo-600"><Icons.Clock /></span>
+                      <span className="text-[#17663D]"><Icons.Clock /></span>
                       <span className="font-bold text-slate-900">Hours:</span>
                       <span>{o.officeHours || "Mon - Fri: 8:00 AM - 5:00 PM"}</span>
                     </div>
@@ -914,7 +917,7 @@ function OfficesView({ offices, globalSearch, setGlobalSearch, setActiveTab }) {
                         {serviceList.map((srv, idx) => (
                           <span
                             key={idx}
-                            className="bg-indigo-50/80 text-indigo-700 border border-indigo-100 text-xs font-semibold px-3 py-1 rounded-xl"
+                            className="bg-[#0A3520]/5 text-[#17663D] border border-[#3C8B5C]/20 text-xs font-semibold px-3 py-1 rounded-xl"
                           >
                             {srv}
                           </span>
@@ -927,7 +930,7 @@ function OfficesView({ offices, globalSearch, setGlobalSearch, setActiveTab }) {
                 <div className="mt-6 pt-4 border-t border-slate-100 flex justify-end">
                   <button
                     onClick={() => setActiveTab("concern")}
-                    className="text-xs bg-slate-900 hover:bg-indigo-600 text-white font-bold px-4 py-2.5 rounded-xl transition flex items-center gap-1.5"
+                    className="text-xs bg-[#0A3520] hover:bg-[#17663D] text-white font-bold px-4 py-2.5 rounded-xl transition flex items-center gap-1.5"
                   >
                     <span>Submit Inquiry</span>
                     <Icons.ArrowRight />
@@ -963,7 +966,7 @@ function FaqsView({ faqs, offices, globalSearch, setGlobalSearch, setActiveTab }
       <div className="bg-white p-7 rounded-3xl border border-slate-200/80 shadow-sm space-y-5">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
-            <span className="text-xs font-bold uppercase tracking-widest text-emerald-600">Knowledge Base</span>
+            <span className="text-xs font-bold uppercase tracking-widest text-[#17663D]">Knowledge Base</span>
             <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-0.5">Frequently Asked Questions</h1>
             <p className="text-slate-500 text-sm mt-1">Verified answers regarding campus policies, requirements, and procedures.</p>
           </div>
@@ -977,7 +980,7 @@ function FaqsView({ faqs, offices, globalSearch, setGlobalSearch, setActiveTab }
               value={globalSearch}
               onChange={(e) => setGlobalSearch(e.target.value)}
               placeholder="Search questions..."
-              className="w-full pl-10 pr-8 py-2.5 bg-slate-50 border border-slate-200 rounded-2xl text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-600"
+              className="w-full pl-10 pr-8 py-2.5 bg-slate-50 border border-slate-200 rounded-2xl text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#3C8B5C]"
             />
             {globalSearch && (
               <button
@@ -998,7 +1001,7 @@ function FaqsView({ faqs, offices, globalSearch, setGlobalSearch, setActiveTab }
               onClick={() => setSelectedCat(cat)}
               className={`px-4 py-2 rounded-xl text-xs font-bold transition ${
                 selectedCat === cat
-                  ? "bg-indigo-600 text-white shadow-md shadow-indigo-600/20"
+                  ? "bg-[#17663D] text-white shadow-md shadow-[#17663D]/20"
                   : "bg-slate-100 text-slate-600 hover:bg-slate-200"
               }`}
             >
@@ -1016,7 +1019,7 @@ function FaqsView({ faqs, offices, globalSearch, setGlobalSearch, setActiveTab }
             <div className="flex justify-center gap-3 pt-2">
               <button
                 onClick={() => setActiveTab("assistant")}
-                className="bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold text-xs px-4 py-2.5 rounded-xl"
+                className="bg-amber-400 hover:bg-amber-500 text-slate-950 font-bold text-xs px-4 py-2.5 rounded-xl shadow"
               >
                 Ask CM AI Assistant
               </button>
@@ -1037,7 +1040,7 @@ function FaqsView({ faqs, offices, globalSearch, setGlobalSearch, setActiveTab }
               <div
                 key={id}
                 className={`bg-white rounded-2xl border transition-all duration-200 overflow-hidden ${
-                  isOpen ? "border-indigo-300 shadow-md" : "border-slate-200/80 shadow-sm hover:border-slate-300"
+                  isOpen ? "border-[#3C8B5C] shadow-md" : "border-slate-200/80 shadow-sm hover:border-slate-300"
                 }`}
               >
                 <button
@@ -1045,12 +1048,12 @@ function FaqsView({ faqs, offices, globalSearch, setGlobalSearch, setActiveTab }
                   className="w-full text-left p-5 sm:p-6 flex items-center justify-between gap-4 hover:bg-slate-50/50 transition"
                 >
                   <div className="space-y-1.5">
-                    <span className="inline-block text-[10px] font-bold uppercase tracking-wider text-indigo-600 bg-indigo-50 border border-indigo-100 px-2.5 py-0.5 rounded-full">
+                    <span className="inline-block text-[10px] font-bold uppercase tracking-wider text-[#17663D] bg-[#0A3520]/5 border border-[#3C8B5C]/30 px-2.5 py-0.5 rounded-full">
                       {f.category || "General"}
                     </span>
                     <h3 className="font-extrabold text-slate-900 text-base sm:text-lg">{f.question}</h3>
                   </div>
-                  <div className={`p-2 rounded-xl bg-slate-100 text-slate-500 transition-transform duration-200 ${isOpen ? "rotate-180 bg-indigo-50 text-indigo-600" : ""}`}>
+                  <div className={`p-2 rounded-xl bg-slate-100 text-slate-500 transition-transform duration-200 ${isOpen ? "rotate-180 bg-[#0A3520]/10 text-[#17663D]" : ""}`}>
                     <Icons.ChevronDown />
                   </div>
                 </button>
@@ -1062,7 +1065,7 @@ function FaqsView({ faqs, offices, globalSearch, setGlobalSearch, setActiveTab }
                       <span>Verified Campus Policy Record</span>
                       <button
                         onClick={() => setActiveTab("offices")}
-                        className="text-indigo-600 font-bold hover:underline"
+                        className="text-[#17663D] font-bold hover:underline"
                       >
                         View Office Directory →
                       </button>
@@ -1088,7 +1091,7 @@ function BulletinView({ announcements, events }) {
     <div className="space-y-8">
       <div className="bg-white p-7 rounded-3xl border border-slate-200/80 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <span className="text-xs font-bold uppercase tracking-widest text-amber-600">Campus Updates</span>
+          <span className="text-xs font-bold uppercase tracking-widest text-[#17663D]">Campus Updates</span>
           <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-0.5">Bulletins & Events Schedule</h1>
           <p className="text-slate-500 text-sm mt-1">Official school announcements, examination dates, and student activities.</p>
         </div>
@@ -1097,7 +1100,7 @@ function BulletinView({ announcements, events }) {
           <button
             onClick={() => setSubTab("announcements")}
             className={`px-4 py-2 rounded-xl text-xs font-bold transition ${
-              subTab === "announcements" ? "bg-white text-indigo-700 shadow-sm" : "text-slate-600 hover:text-slate-900"
+              subTab === "announcements" ? "bg-white text-[#0A3520] shadow-sm" : "text-slate-600 hover:text-slate-900"
             }`}
           >
             Announcements ({pubAnn.length})
@@ -1105,7 +1108,7 @@ function BulletinView({ announcements, events }) {
           <button
             onClick={() => setSubTab("events")}
             className={`px-4 py-2 rounded-xl text-xs font-bold transition ${
-              subTab === "events" ? "bg-white text-indigo-700 shadow-sm" : "text-slate-600 hover:text-slate-900"
+              subTab === "events" ? "bg-white text-[#0A3520] shadow-sm" : "text-slate-600 hover:text-slate-900"
             }`}
           >
             Upcoming Events ({pubEvt.length})
@@ -1121,7 +1124,7 @@ function BulletinView({ announcements, events }) {
               className="bg-white p-7 rounded-3xl border border-slate-200/80 shadow-sm hover:shadow-md transition space-y-3"
             >
               <div className="flex items-center justify-between">
-                <span className="text-xs font-bold px-3 py-1 rounded-full bg-amber-50 text-amber-700 border border-amber-200">
+                <span className="text-xs font-bold px-3 py-1 rounded-full bg-[#0A3520]/10 text-[#0A3520] border border-[#3C8B5C]/30">
                   {a.category || "Official Notice"}
                 </span>
                 <span className="text-xs text-slate-400 font-medium">Published: {a.publishDate}</span>
@@ -1140,7 +1143,7 @@ function BulletinView({ announcements, events }) {
             >
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
-                  <span className="bg-indigo-50 text-indigo-700 border border-indigo-100 text-xs font-extrabold px-3.5 py-1 rounded-full">
+                  <span className="bg-[#0A3520]/10 text-[#17663D] border border-[#3C8B5C]/30 text-xs font-extrabold px-3.5 py-1 rounded-full">
                     📅 {ev.eventDate}
                   </span>
                   <span className="text-xs text-slate-500 font-semibold">
@@ -1151,7 +1154,7 @@ function BulletinView({ announcements, events }) {
                 <p className="text-slate-600 text-sm leading-relaxed">{ev.description}</p>
               </div>
               <div className="pt-4 border-t border-slate-100 flex items-center gap-2 text-xs font-bold text-slate-700">
-                <span className="text-indigo-600"><Icons.Pin /></span>
+                <span className="text-[#17663D]"><Icons.Pin /></span>
                 <span>Venue: {ev.venue}</span>
               </div>
             </div>
@@ -1246,7 +1249,7 @@ function ConcernView({ concerns, setConcerns, showToast }) {
     <div className="max-w-3xl mx-auto space-y-6">
       <div className="bg-white p-7 rounded-3xl border border-slate-200/80 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <span className="text-xs font-bold uppercase tracking-widest text-indigo-600">Student Support</span>
+          <span className="text-xs font-bold uppercase tracking-widest text-[#17663D]">Student Support</span>
           <h1 className="text-2xl font-extrabold text-slate-900 mt-0.5">Student Concern & Help Desk</h1>
           <p className="text-slate-500 text-xs mt-1">Submit an official inquiry or track your ticket resolution status.</p>
         </div>
@@ -1255,7 +1258,7 @@ function ConcernView({ concerns, setConcerns, showToast }) {
           <button
             onClick={() => setMode("submit")}
             className={`px-4 py-2 rounded-xl text-xs font-bold transition ${
-              mode === "submit" ? "bg-white text-indigo-700 shadow-sm" : "text-slate-600"
+              mode === "submit" ? "bg-white text-[#0A3520] shadow-sm" : "text-slate-600"
             }`}
           >
             Submit Concern
@@ -1263,7 +1266,7 @@ function ConcernView({ concerns, setConcerns, showToast }) {
           <button
             onClick={() => setMode("track")}
             className={`px-4 py-2 rounded-xl text-xs font-bold transition ${
-              mode === "track" ? "bg-white text-indigo-700 shadow-sm" : "text-slate-600"
+              mode === "track" ? "bg-white text-[#0A3520] shadow-sm" : "text-slate-600"
             }`}
           >
             Track Reference #
@@ -1273,8 +1276,8 @@ function ConcernView({ concerns, setConcerns, showToast }) {
 
       {mode === "submit" ? (
         refNum ? (
-          <div className="bg-white border-2 border-emerald-200 p-8 rounded-3xl text-center space-y-5 shadow-lg">
-            <div className="w-16 h-16 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center mx-auto border border-emerald-200">
+          <div className="bg-white border-2 border-[#3C8B5C] p-8 rounded-3xl text-center space-y-5 shadow-lg">
+            <div className="w-16 h-16 bg-[#0A3520]/10 text-[#17663D] rounded-2xl flex items-center justify-center mx-auto border border-[#3C8B5C]/30">
               <Icons.CheckCircle />
             </div>
             <div>
@@ -1283,9 +1286,9 @@ function ConcernView({ concerns, setConcerns, showToast }) {
                 Save your unique tracking reference number below to check updates from school staff.
               </p>
             </div>
-            <div className="bg-slate-50 border-2 border-dashed border-emerald-300 p-5 rounded-2xl max-w-sm mx-auto">
+            <div className="bg-slate-50 border-2 border-dashed border-[#3C8B5C] p-5 rounded-2xl max-w-sm mx-auto">
               <div className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Reference Code</div>
-              <div className="text-2xl font-mono font-black text-emerald-700 mt-1 select-all">{refNum}</div>
+              <div className="text-2xl font-mono font-black text-[#17663D] mt-1 select-all">{refNum}</div>
             </div>
             <div className="flex justify-center gap-3 pt-2">
               <button
@@ -1294,7 +1297,7 @@ function ConcernView({ concerns, setConcerns, showToast }) {
                   setMode("track");
                   setRefNum(null);
                 }}
-                className="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold transition"
+                className="px-5 py-2.5 bg-[#17663D] hover:bg-[#0A3520] text-white rounded-xl text-xs font-bold transition"
               >
                 Track Status Now
               </button>
@@ -1314,7 +1317,7 @@ function ConcernView({ concerns, setConcerns, showToast }) {
                 <select
                   value={category}
                   onChange={(e) => setCategory(e.target.value)}
-                  className="w-full px-4 py-3 border border-slate-200 rounded-xl text-sm bg-slate-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-600"
+                  className="w-full px-4 py-3 border border-slate-200 rounded-xl text-sm bg-slate-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#3C8B5C]"
                 >
                   <option value="Registrar & Academic">Registrar & Academic</option>
                   <option value="Cashier & Finance">Cashier & Finance</option>
@@ -1330,7 +1333,7 @@ function ConcernView({ concerns, setConcerns, showToast }) {
                   value={contactEmail}
                   onChange={(e) => setContactEmail(e.target.value)}
                   placeholder="student@collegeofmaasin.edu.ph"
-                  className="w-full px-4 py-3 border border-slate-200 rounded-xl text-sm bg-slate-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-600"
+                  className="w-full px-4 py-3 border border-slate-200 rounded-xl text-sm bg-slate-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#3C8B5C]"
                 />
               </div>
             </div>
@@ -1342,7 +1345,7 @@ function ConcernView({ concerns, setConcerns, showToast }) {
                 value={subject}
                 onChange={(e) => setSubject(e.target.value)}
                 placeholder="e.g., Follow-up on TOR request or GCash payment verification"
-                className="w-full px-4 py-3 border border-slate-200 rounded-xl text-sm bg-slate-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-600"
+                className="w-full px-4 py-3 border border-slate-200 rounded-xl text-sm bg-slate-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#3C8B5C]"
                 required
               />
             </div>
@@ -1354,14 +1357,14 @@ function ConcernView({ concerns, setConcerns, showToast }) {
                 onChange={(e) => setMessage(e.target.value)}
                 rows="4"
                 placeholder="Include relevant details such as your Student ID, transaction date, or specific question..."
-                className="w-full px-4 py-3 border border-slate-200 rounded-xl text-sm bg-slate-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-600"
+                className="w-full px-4 py-3 border border-slate-200 rounded-xl text-sm bg-slate-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#3C8B5C]"
                 required
               />
             </div>
 
             <button
               type="submit"
-              className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3.5 rounded-xl text-sm shadow-lg shadow-indigo-600/20 transition flex items-center justify-center gap-2"
+              className="w-full bg-[#17663D] hover:bg-[#0A3520] text-white font-bold py-3.5 rounded-xl text-sm shadow-lg shadow-[#17663D]/20 transition flex items-center justify-center gap-2"
             >
               <Icons.Send />
               <span>Submit Concern & Generate Reference Code</span>
@@ -1378,12 +1381,12 @@ function ConcernView({ concerns, setConcerns, showToast }) {
                 value={trackInput}
                 onChange={(e) => setTrackInput(e.target.value)}
                 placeholder="e.g. CM-CON-2026-4821"
-                className="flex-1 px-4 py-3 border border-slate-200 rounded-xl font-mono text-sm uppercase bg-slate-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-600"
+                className="flex-1 px-4 py-3 border border-slate-200 rounded-xl font-mono text-sm uppercase bg-slate-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#3C8B5C]"
                 required
               />
               <button
                 type="submit"
-                className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold px-6 py-3 rounded-xl text-sm transition"
+                className="bg-[#17663D] hover:bg-[#0A3520] text-white font-bold px-6 py-3 rounded-xl text-sm transition"
               >
                 Track Status
               </button>
@@ -1401,7 +1404,7 @@ function ConcernView({ concerns, setConcerns, showToast }) {
               <div className="flex items-center justify-between border-b border-slate-200 pb-3">
                 <div>
                   <div className="text-[10px] font-bold uppercase text-slate-400">Reference Number</div>
-                  <div className="text-lg font-mono font-black text-indigo-700">{trackedResult.referenceNumber}</div>
+                  <div className="text-lg font-mono font-black text-[#17663D]">{trackedResult.referenceNumber}</div>
                 </div>
                 <span
                   className={`px-3.5 py-1 rounded-full text-xs font-bold ${
@@ -1424,9 +1427,9 @@ function ConcernView({ concerns, setConcerns, showToast }) {
                 </div>
               </div>
               {trackedResult.adminNotes && (
-                <div className="p-4 rounded-xl bg-indigo-50 border border-indigo-200 text-xs space-y-1">
-                  <div className="font-extrabold text-indigo-950">Official Staff Resolution Note:</div>
-                  <p className="text-indigo-800">{trackedResult.adminNotes}</p>
+                <div className="p-4 rounded-xl bg-[#0A3520]/5 border border-[#3C8B5C]/30 text-xs space-y-1">
+                  <div className="font-extrabold text-[#0A3520]">Official Staff Resolution Note:</div>
+                  <p className="text-slate-700">{trackedResult.adminNotes}</p>
                 </div>
               )}
             </div>
@@ -1525,14 +1528,14 @@ function AssistantView({ offices, faqs, announcements, setActiveTab }) {
 
   return (
     <div className="max-w-4xl mx-auto space-y-5">
-      <div className="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white p-7 rounded-3xl shadow-lg border border-indigo-900/80 flex items-center justify-between">
+      <div className="bg-gradient-to-r from-[#0A3520] via-[#0E4A2C] to-[#17663D] text-white p-7 rounded-3xl shadow-lg border border-[#3C8B5C]/40 flex items-center justify-between">
         <div className="flex items-center gap-4">
           <div className="p-3.5 rounded-2xl bg-amber-400/20 text-amber-300 border border-amber-400/30">
             <Icons.Sparkles />
           </div>
           <div>
             <h1 className="text-xl sm:text-2xl font-extrabold">CM AI Grounded Assistant</h1>
-            <p className="text-xs text-indigo-200 mt-0.5">Responses strictly verified against official College of Maasin database records</p>
+            <p className="text-xs text-emerald-200 mt-0.5">Responses strictly verified against official College of Maasin database records</p>
           </div>
         </div>
       </div>
@@ -1545,19 +1548,19 @@ function AssistantView({ offices, faqs, announcements, setActiveTab }) {
               <div
                 className={`max-w-[85%] rounded-2xl p-4 text-sm leading-relaxed ${
                   m.sender === "user"
-                    ? "bg-indigo-600 text-white rounded-br-none shadow-sm"
+                    ? "bg-[#17663D] text-white rounded-br-none shadow-sm"
                     : "bg-slate-100 text-slate-800 rounded-bl-none border border-slate-200/80"
                 }`}
               >
                 {m.sender === "ai" && (
-                  <div className="flex items-center gap-1.5 text-xs font-extrabold text-indigo-700 mb-1">
+                  <div className="flex items-center gap-1.5 text-xs font-extrabold text-[#17663D] mb-1">
                     <Icons.Bot />
                     <span>CM Grounded AI</span>
                   </div>
                 )}
                 <p>{m.text}</p>
                 {m.source && (
-                  <div className="mt-2.5 pt-2 border-t border-slate-200/80 text-[11px] font-bold text-emerald-700 flex items-center gap-1">
+                  <div className="mt-2.5 pt-2 border-t border-slate-200/80 text-[11px] font-bold text-[#17663D] flex items-center gap-1">
                     <span>✓ Verified Source:</span>
                     <span className="bg-white px-2 py-0.5 rounded border border-slate-200">{m.source}</span>
                   </div>
@@ -1576,7 +1579,7 @@ function AssistantView({ offices, faqs, announcements, setActiveTab }) {
             <button
               key={p}
               onClick={() => askQuestion(p)}
-              className="text-xs bg-slate-100 hover:bg-indigo-50 hover:text-indigo-700 text-slate-700 font-semibold px-3.5 py-1.5 rounded-full whitespace-nowrap transition"
+              className="text-xs bg-slate-100 hover:bg-[#0A3520]/10 hover:text-[#17663D] text-slate-700 font-semibold px-3.5 py-1.5 rounded-full whitespace-nowrap transition"
             >
               {p}
             </button>
@@ -1596,12 +1599,12 @@ function AssistantView({ offices, faqs, announcements, setActiveTab }) {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Ask about TOR, tuition, office locations, or school policies..."
-            className="flex-1 px-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-600"
+            className="flex-1 px-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#3C8B5C]"
             required
           />
           <button
             type="submit"
-            className="bg-amber-500 hover:bg-amber-600 text-slate-950 font-extrabold px-6 py-3 rounded-2xl text-sm transition flex items-center gap-1.5 shadow-md shadow-amber-500/15"
+            className="bg-amber-400 hover:bg-amber-500 text-slate-950 font-extrabold px-6 py-3 rounded-2xl text-sm transition flex items-center gap-1.5 shadow-md shadow-amber-500/15"
           >
             <span>Ask</span>
             <Icons.Send />
@@ -1629,7 +1632,6 @@ function AdminDashboardView({
 
   const isValidMongoId = (id) => typeof id === "string" && /^[0-9a-fA-F]{24}$/.test(id);
 
-  // One-click Seed & Sync with custom confirmation modal
   const triggerSeedDatabase = () => {
     setConfirmDialog({
       title: "Seed & Sync MongoDB Database?",
@@ -1655,7 +1657,6 @@ function AdminDashboardView({
     });
   };
 
-  // Form States
   const [officeForm, setOfficeForm] = useState({ officeName: "", description: "", location: "", contactEmail: "", contactNumber: "", officeHours: "Mon - Fri: 8:00 AM - 5:00 PM", services: "" });
   const [faqForm, setFaqForm] = useState({ question: "", answer: "", category: "Academic & Records", keywords: "" });
   const [annForm, setAnnForm] = useState({ title: "", content: "", category: "Academic", publishDate: new Date().toISOString().split('T')[0] });
@@ -1770,27 +1771,27 @@ function AdminDashboardView({
   return (
     <div className="space-y-8">
       {/* TOP ADMIN BANNER */}
-      <div className="bg-slate-950 text-white p-8 rounded-3xl shadow-xl border border-slate-800 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+      <div className="bg-[#0A3520] text-white p-8 rounded-3xl shadow-xl border border-[#0E4A2C] flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-xs font-bold mb-2">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/20 border border-emerald-400/30 text-emerald-200 text-xs font-bold mb-2">
             <Icons.Database />
             <span>MongoDB Atlas Control Center</span>
           </div>
           <h1 className="text-2xl sm:text-3xl font-extrabold">Admin Management Dashboard</h1>
-          <p className="text-slate-400 text-xs mt-1">Create, update, and manage verified College of Maasin records.</p>
+          <p className="text-emerald-200/80 text-xs mt-1">Create, update, and manage verified College of Maasin records.</p>
         </div>
 
         <div className="flex flex-wrap items-center gap-3">
           <button
             onClick={triggerSeedDatabase}
-            className="bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold px-4 py-2.5 rounded-xl text-xs transition shadow-md"
+            className="bg-amber-400 hover:bg-amber-500 text-slate-950 font-extrabold px-4 py-2.5 rounded-xl text-xs transition shadow-md"
           >
             🌱 Seed & Sync MongoDB
           </button>
           {adminSection !== "concerns" && (
             <button
               onClick={openAddModal}
-              className="bg-indigo-600 hover:bg-indigo-500 text-white font-bold px-4 py-2.5 rounded-xl text-xs flex items-center gap-1.5 transition shadow-md"
+              className="bg-[#17663D] hover:bg-[#3C8B5C] text-white font-bold px-4 py-2.5 rounded-xl text-xs flex items-center gap-1.5 transition shadow-md border border-[#3C8B5C]"
             >
               <Icons.Plus />
               <span>Add New {adminSection.slice(0, -1)}</span>
@@ -1813,7 +1814,7 @@ function AdminDashboardView({
             onClick={() => setAdminSection(stat.sec)}
             className={`p-5 rounded-2xl border cursor-pointer transition ${
               adminSection === stat.sec
-                ? "bg-indigo-50/70 border-indigo-300 shadow-sm"
+                ? "bg-[#0A3520]/10 border-[#3C8B5C] shadow-sm"
                 : "bg-white border-slate-200/80 hover:border-slate-300"
             }`}
           >
@@ -1832,7 +1833,7 @@ function AdminDashboardView({
             key={sec}
             onClick={() => setAdminSection(sec)}
             className={`px-4 py-2 rounded-xl text-xs font-bold capitalize transition ${
-              adminSection === sec ? "bg-slate-900 text-white" : "bg-white text-slate-600 hover:bg-slate-100 border border-slate-200"
+              adminSection === sec ? "bg-[#0A3520] text-white" : "bg-white text-slate-600 hover:bg-slate-100 border border-slate-200"
             }`}
           >
             {sec}
@@ -1862,12 +1863,12 @@ function AdminDashboardView({
                       <td className="p-4 font-bold text-slate-900">{o.officeName}</td>
                       <td className="p-4 text-slate-600">{o.location}</td>
                       <td className="p-4">
-                        <span className={`px-2.5 py-1 rounded-full text-[10px] font-bold ${isDB ? "bg-emerald-50 text-emerald-700 border border-emerald-200" : "bg-amber-50 text-amber-700 border border-amber-200"}`}>
+                        <span className={`px-2.5 py-1 rounded-full text-[10px] font-bold ${isDB ? "bg-emerald-50 text-[#17663D] border border-[#3C8B5C]/30" : "bg-amber-50 text-amber-700 border border-amber-200"}`}>
                           {isDB ? "MongoDB" : "Demo Preview"}
                         </span>
                       </td>
                       <td className="p-4 text-right space-x-3">
-                        <button onClick={() => openEditModal(o)} className="text-indigo-600 font-bold hover:underline">Edit</button>
+                        <button onClick={() => openEditModal(o)} className="text-[#17663D] font-bold hover:underline">Edit</button>
                         <button onClick={() => confirmDelete(o)} className="text-rose-600 font-bold hover:underline">Delete</button>
                       </td>
                     </tr>
@@ -1898,12 +1899,12 @@ function AdminDashboardView({
                       <td className="p-4 font-bold text-slate-900">{f.question}</td>
                       <td className="p-4 text-slate-600">{f.category}</td>
                       <td className="p-4">
-                        <span className={`px-2.5 py-1 rounded-full text-[10px] font-bold ${isDB ? "bg-emerald-50 text-emerald-700 border border-emerald-200" : "bg-amber-50 text-amber-700 border border-amber-200"}`}>
+                        <span className={`px-2.5 py-1 rounded-full text-[10px] font-bold ${isDB ? "bg-emerald-50 text-[#17663D] border border-[#3C8B5C]/30" : "bg-amber-50 text-amber-700 border border-amber-200"}`}>
                           {isDB ? "MongoDB" : "Demo Preview"}
                         </span>
                       </td>
                       <td className="p-4 text-right space-x-3">
-                        <button onClick={() => openEditModal(f)} className="text-indigo-600 font-bold hover:underline">Edit</button>
+                        <button onClick={() => openEditModal(f)} className="text-[#17663D] font-bold hover:underline">Edit</button>
                         <button onClick={() => confirmDelete(f)} className="text-rose-600 font-bold hover:underline">Delete</button>
                       </td>
                     </tr>
@@ -1930,7 +1931,7 @@ function AdminDashboardView({
                     <td className="p-4 font-bold text-slate-900">{a.title}</td>
                     <td className="p-4 text-slate-600">{a.publishDate}</td>
                     <td className="p-4 text-right space-x-3">
-                      <button onClick={() => openEditModal(a)} className="text-indigo-600 font-bold hover:underline">Edit</button>
+                      <button onClick={() => openEditModal(a)} className="text-[#17663D] font-bold hover:underline">Edit</button>
                       <button onClick={() => confirmDelete(a)} className="text-rose-600 font-bold hover:underline">Delete</button>
                     </td>
                   </tr>
@@ -1958,7 +1959,7 @@ function AdminDashboardView({
                     <td className="p-4 text-slate-600">{ev.eventDate}</td>
                     <td className="p-4 text-slate-600">{ev.venue}</td>
                     <td className="p-4 text-right space-x-3">
-                      <button onClick={() => openEditModal(ev)} className="text-indigo-600 font-bold hover:underline">Edit</button>
+                      <button onClick={() => openEditModal(ev)} className="text-[#17663D] font-bold hover:underline">Edit</button>
                       <button onClick={() => confirmDelete(ev)} className="text-rose-600 font-bold hover:underline">Delete</button>
                     </td>
                   </tr>
@@ -1976,7 +1977,7 @@ function AdminDashboardView({
               concerns.map((c) => (
                 <div key={c._id || c.id} className="border border-slate-200 p-5 rounded-2xl bg-slate-50/60 text-xs space-y-3">
                   <div className="flex justify-between items-center">
-                    <span className="font-mono font-black text-sm text-indigo-700">{c.referenceNumber}</span>
+                    <span className="font-mono font-black text-sm text-[#17663D]">{c.referenceNumber}</span>
                     <select
                       value={c.status}
                       onChange={(e) => handleUpdateConcern(c._id || c.id, e.target.value, c.adminNotes)}
@@ -2056,7 +2057,7 @@ function AdminDashboardView({
 
               <div className="flex justify-end gap-2 pt-3">
                 <button type="button" onClick={() => setShowModal(false)} className="px-4 py-2.5 border rounded-xl font-semibold">Cancel</button>
-                <button type="submit" className="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-bold">Save to MongoDB</button>
+                <button type="submit" className="px-5 py-2.5 bg-[#17663D] hover:bg-[#0A3520] text-white rounded-xl font-bold">Save to MongoDB</button>
               </div>
             </form>
           </div>
@@ -2078,7 +2079,7 @@ function AdminDashboardView({
               </button>
               <button
                 onClick={confirmDialog.onConfirm}
-                className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold"
+                className="px-4 py-2 bg-[#17663D] hover:bg-[#0A3520] text-white rounded-xl text-xs font-bold"
               >
                 Confirm
               </button>
