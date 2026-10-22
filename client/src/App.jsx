@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import cmLogo from '../cm.jpg';
 
+const API_BASE = import.meta.env.VITE_API_BASE_URL || '/api/helphub';
+
 // --- INITIAL FALLBACK DATA ---
 const INITIAL_OFFICES = [
   {
@@ -190,10 +192,10 @@ export default function App() {
   const refreshAllData = async () => {
     try {
       const [offRes, faqRes, annRes, evtRes] = await Promise.all([
-        fetch('/api/helphub/offices').then(r => r.ok ? r.json() : null),
-        fetch('/api/helphub/faqs').then(r => r.ok ? r.json() : null),
-        fetch('/api/helphub/announcements').then(r => r.ok ? r.json() : null),
-        fetch('/api/helphub/events').then(r => r.ok ? r.json() : null)
+        fetch(`${API_BASE}/offices`).then(r => r.ok ? r.json() : null),
+        fetch(`${API_BASE}/faqs`).then(r => r.ok ? r.json() : null),
+        fetch(`${API_BASE}/announcements`).then(r => r.ok ? r.json() : null),
+        fetch(`${API_BASE}/events`).then(r => r.ok ? r.json() : null)
       ]);
 
       if (offRes?.data?.length) setOffices(offRes.data);
@@ -202,7 +204,7 @@ export default function App() {
       if (evtRes?.data?.length) setEvents(evtRes.data);
 
       if (isAdmin) {
-        const conRes = await fetch('/api/helphub/admin/concerns', {
+        const conRes = await fetch(`${API_BASE}/admin/concerns`, {
           headers: { 'x-admin-passcode': adminPasscode }
         }).then(r => r.ok ? r.json() : null);
         if (conRes?.data) setConcerns(conRes.data);
@@ -1181,7 +1183,7 @@ function ConcernView({ concerns, setConcerns, showToast }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch('/api/helphub/concerns', {
+      const res = await fetch(`${API_BASE}/concerns`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ category, subject, message, contactEmail })
@@ -1225,7 +1227,7 @@ function ConcernView({ concerns, setConcerns, showToast }) {
     if (!code) return;
 
     try {
-      const res = await fetch(`/api/helphub/concerns/track/${code}`);
+      const res = await fetch(`${API_BASE}/concerns/track/${code}`);
       if (res.ok) {
         const data = await res.json();
         if (data.data) {
@@ -1460,7 +1462,7 @@ function AssistantView({ offices, faqs, announcements, setActiveTab }) {
     setLoading(true);
 
     try {
-      const res = await fetch('/api/helphub/assistant/ask', {
+      const res = await fetch(`${API_BASE}/assistant/ask`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ question: q })
@@ -1639,7 +1641,7 @@ function AdminDashboardView({
       onConfirm: async () => {
         setConfirmDialog(null);
         try {
-          const res = await fetch('/api/helphub/admin/seed', {
+          const res = await fetch(`${API_BASE}/admin/seed`, {
             method: 'POST',
             headers: { 'x-admin-passcode': adminPasscode }
           });
@@ -1694,23 +1696,23 @@ function AdminDashboardView({
     try {
       if (adminSection === "offices") {
         const payload = { ...officeForm, services: typeof officeForm.services === 'string' ? officeForm.services.split(',').map(s => s.trim()).filter(Boolean) : officeForm.services };
-        const url = isExistingMongoRecord ? `/api/helphub/admin/offices/${targetId}` : '/api/helphub/admin/offices';
+        const url = isExistingMongoRecord ? `${API_BASE}/admin/offices/${targetId}` : `${API_BASE}/admin/offices`;
         const method = isExistingMongoRecord ? 'PUT' : 'POST';
         const res = await fetch(url, { method, headers, body: JSON.stringify(payload) });
         if (!res.ok) throw new Error("Failed to save office");
       } else if (adminSection === "faqs") {
         const payload = { ...faqForm, keywords: typeof faqForm.keywords === 'string' ? faqForm.keywords.split(',').map(k => k.trim()).filter(Boolean) : faqForm.keywords };
-        const url = isExistingMongoRecord ? `/api/helphub/admin/faqs/${targetId}` : '/api/helphub/admin/faqs';
+        const url = isExistingMongoRecord ? `${API_BASE}/admin/faqs/${targetId}` : `${API_BASE}/admin/faqs`;
         const method = isExistingMongoRecord ? 'PUT' : 'POST';
         const res = await fetch(url, { method, headers, body: JSON.stringify(payload) });
         if (!res.ok) throw new Error("Failed to save FAQ");
       } else if (adminSection === "announcements") {
-        const url = isExistingMongoRecord ? `/api/helphub/admin/announcements/${targetId}` : '/api/helphub/admin/announcements';
+        const url = isExistingMongoRecord ? `${API_BASE}/admin/announcements/${targetId}` : `${API_BASE}/admin/announcements`;
         const method = isExistingMongoRecord ? 'PUT' : 'POST';
         const res = await fetch(url, { method, headers, body: JSON.stringify(annForm) });
         if (!res.ok) throw new Error("Failed to save announcement");
       } else if (adminSection === "events") {
-        const url = isExistingMongoRecord ? `/api/helphub/admin/events/${targetId}` : '/api/helphub/admin/events';
+        const url = isExistingMongoRecord ? `${API_BASE}/admin/events/${targetId}` : `${API_BASE}/admin/events`;
         const method = isExistingMongoRecord ? 'PUT' : 'POST';
         const res = await fetch(url, { method, headers, body: JSON.stringify(eventForm) });
         if (!res.ok) throw new Error("Failed to save event");
@@ -1741,7 +1743,7 @@ function AdminDashboardView({
           return;
         }
         try {
-          const res = await fetch(`/api/helphub/admin/${adminSection}/${id}`, {
+          const res = await fetch(`${API_BASE}/admin/${adminSection}/${id}`, {
             method: 'DELETE',
             headers: { 'x-admin-passcode': adminPasscode }
           });
@@ -1758,7 +1760,7 @@ function AdminDashboardView({
   const handleUpdateConcern = async (id, status, adminNotes) => {
     setConcerns(concerns.map(c => (c._id === id || c.id === id) ? { ...c, status, adminNotes } : c));
     try {
-      await fetch(`/api/helphub/admin/concerns/${id}`, {
+      await fetch(`${API_BASE}/admin/concerns/${id}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json', 'x-admin-passcode': adminPasscode },
         body: JSON.stringify({ status, adminNotes })
