@@ -1,7 +1,9 @@
 const express = require('express');
+const axios = require('axios');  
 const mongoose = require('mongoose');
 const cors = require('cors');
 const dns = require('dns');
+
 require('dotenv').config();
 
 // Override Node's default DNS resolution only when running locally (not on Vercel cloud)
@@ -437,68 +439,71 @@ app.post('/api/helphub/assistant/ask', async (req, res) => {
   try {
     const { question } = req.body;
     if (!question || !question.trim()) {
-      return res.status(400).json({ success: false, message: 'Question prompt is required.' });
+      return res.status(400).json({ success: false, message: "Question is required." });
     }
 
-    const q = question.toLowerCase();
+    // 1. Fetch live records from MongoDB Atlas for grounding
+    let faqs = [];
+    let offices = [];
+    try {
+      faqs = await Faq.find({ isPublished: { $ne: false } }).limit(15).lean();
+      offices = await Office.find({ isPublished: { $ne: false } }).limit(15).lean();
+    } catch (dbErr) {
+      console.warn("MongoDB grounding fetch warning:", dbErr.message);
+    }
 
-    // Query database for matching FAQs
-    const matchedFaqs = await Faq.find({
-      isPublished: true,
-      $or: [
-        { question: new RegExp(q, 'i') },
-        { answer: new RegExp(q, 'i') },
-        { keywords: new RegExp(q, 'i') }
-      ]
-    }).populate('relatedOfficeId');
+    // 2. Prepare context prompt
+    const campusContext = `
+    You are the official AI Assistant for The College of Maasin (CM HelpHub).
+    Your guidelines:
+    - If the student says "hello", "hi", or greets you, greet them warmly and introduce yourself as the CM HelpHub Grounded Assistant.
+    - For campus inquiries (offices, locations, requirements, procedures), answer accurately based strictly on the verified school records below.
+    - If the answer cannot be found in the records, politely explain that the detail isn't in current records, and suggest checking the Office Directory or visiting the Student Concern Desk.
 
-    if (matchedFaqs.length > 0) {
-      const faq = matchedFaqs[0];
-      return res.status(200).json({
-        success: true,
-        answer: faq.answer,
-        source: {
-          type: 'FAQ Record',
-          title: faq.question,
-          category: faq.category,
-          relatedOffice: faq.relatedOfficeId ? faq.relatedOfficeId.officeName : null
+    --- OFFICIAL FAQ RECORDS ---
+    ${faqs.map(f => `Q: ${f.question}\nA:${f.answer}`).join('\n\n')}
+
+    --- OFFICIAL CAMPUS OFFICES ---
+    ${offices.map(o => `Office: ${o.officeName}\nLocation:${o.location}\nHours: ${o.officeHours}\nEmail:${o.contactEmail}`).join('\n\n')}
+    `;
+
+    // 3. Call OpenRouter API with an active free model
+    const aiResponse = await axios.post(
+      'https://openrouter.ai/api/v1/chat/completions',
+      {
+        model: 'openrouter/auto',
+        messages: [
+          { role: 'system', content: campusContext },
+          { role: 'user', content: question.trim() }
+        ],
+        temperature: 0.2
+      },
+      {
+        headers: {
+          'Authorization': `Bearer ${process.env.AI_API_KEY}`,
+          'Content-Type': 'application/json',
+          'HTTP-Referer': 'http://localhost:5173',
+          'X-Title': 'CM HelpHub'
         }
-      });
-    }
+      }
+    );
 
-    // Query database for matching Offices
-    const matchedOffices = await Office.find({
-      isPublished: true,
-      $or: [
-        { officeName: new RegExp(q, 'i') },
-        { description: new RegExp(q, 'i') },
-        { services: new RegExp(q, 'i') }
-      ]
-    });
+    const generatedText = aiResponse.data?.choices?.[0]?.message?.content?.trim();
 
-    if (matchedOffices.length > 0) {
-      const office = matchedOffices[0];
-      const answerText = `${office.officeName} is located at ${office.location}. Office Hours: ${office.officeHours}. Contact Email: ${office.contactEmail}. Primary services: ${office.services.join(', ')}.`;
-      return res.status(200).json({
-        success: true,
-        answer: answerText,
-        source: {
-          type: 'Office Directory',
-          title: office.officeName,
-          location: office.location
-        }
-      });
-    }
-
-    // Default Fallback to avoid AI hallucinations
-    res.status(200).json({
+    return res.json({
       success: true,
-      answer: `I could not find verified campus records matching "${question}". To avoid providing inaccurate details, please check the Office Directory or submit an official student concern to school administrators.`,
-      source: null
+      answer: generatedText || "Hello! How can I assist you with College of Maasin records today?",
+      source: {
+        type: "Grounded Knowledge Base",
+        title: "The College of Maasin Official MongoDB Records"
+      }
     });
-
   } catch (error) {
-    res.status(500).json({ success: false, message: 'AI Assistant query failed', error: error.message });
+    console.error("AI Assistant Error:", error.response?.data || error.message);
+    return res.status(500).json({
+      success: false,
+      message: error.response?.data?.error?.message || error.message
+    });
   }
 });
 
@@ -597,6 +602,7 @@ app.post('/api/helphub/admin/seed', verifyAdminPasscode, async (req, res) => {
   }
 });
 
+
 app.use((req, res) => {
   res.status(404).json({ success: false, message: `Route ${req.originalUrl} not found on CM HelpHub server` });
 });
@@ -608,5 +614,10 @@ if (require.main === module) {
     console.log(`[API Base Route] http://localhost:${PORT}/api/helphub`);
   });
 }
+
+
+
+// Route handler for CM HelpHub AI Assistant
+
 
 module.exports = app;
