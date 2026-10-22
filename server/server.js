@@ -6,8 +6,8 @@ const dns = require('dns');
 
 require('dotenv').config();
 
-// Override Node's default DNS resolution only when running locally (not on Vercel cloud)
-if (!process.env.VERCEL) {
+// Override DNS only in local development to prevent Atlas SRV query issues
+if (process.env.NODE_ENV !== 'production' && !process.env.RENDER && !process.env.VERCEL) {
   try {
     dns.setServers(['8.8.8.8', '8.8.4.4']);
   } catch (err) {
