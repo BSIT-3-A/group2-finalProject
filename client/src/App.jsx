@@ -275,9 +275,7 @@ export default function App() {
                   <span className="font-extrabold text-lg tracking-tight text-white">
                     CM HelpHub
                   </span>
-                  <span className="text-[9px] font-bold uppercase tracking-widest px-2 py-0.5 rounded-full bg-[#3C8B5C]/30 text-emerald-200 border border-[#3C8B5C]/50">
-                    Portal
-                  </span>
+
                 </div>
                 <div className="text-[11px] text-emerald-300/80 font-medium">College of Maasin</div>
               </div>
@@ -285,24 +283,46 @@ export default function App() {
 
             {/* DESKTOP NAVIGATION PILLS */}
             <nav className="hidden lg:flex items-center space-x-1.5 bg-[#0E4A2C] p-1.5 rounded-2xl border border-[#17663D]">
-              {navItems.map((item) => (
-                <button
-                  key={item.id}
-                  onClick={() => setActiveTab(item.id)}
-                  className={`px-4 py-2 rounded-xl text-xs font-semibold transition-all duration-200 flex items-center gap-1.5 ${
-                    activeTab === item.id
-                      ? item.isSpecial
-                        ? "bg-gradient-to-r from-amber-400 to-amber-500 text-slate-950 font-extrabold shadow-md shadow-amber-500/20"
-                        : "bg-[#3C8B5C] text-white shadow-md shadow-[#17663D]/50"
-                      : item.isSpecial
-                      ? "text-amber-300 hover:bg-[#17663D]/70"
-                      : "text-emerald-100 hover:text-white hover:bg-[#17663D]/60"
-                  }`}
-                >
-                  {item.isSpecial && <Icons.Sparkles />}
-                  <span>{item.label}</span>
-                </button>
-              ))}
+              {navItems.map((item) => {
+                if (item.isSpecial) {
+                  return (
+                    <button
+                      key={item.id}
+                      onClick={() => setActiveTab(item.id)}
+                      className={`px-4 py-2 rounded-full text-xs font-bold transition-all duration-200 flex items-center gap-2 shadow-md active:scale-95 ${
+                        activeTab === item.id
+                          ? "bg-[#064E2B] text-white ring-2 ring-emerald-400/80 shadow-[#064E2B]/50"
+                          : "bg-[#085435] hover:bg-[#064E2B] text-white border border-emerald-600/40"
+                      }`}
+                    >
+                      <div className="w-6 h-6 rounded-full bg-white flex-shrink-0 flex items-center justify-center overflow-hidden shadow-xs">
+                        <img 
+                          src={cmLogo} 
+                          alt="CM Seal" 
+                          className="w-full h-full object-cover scale-115" 
+                        />
+                      </div>
+                      <span className="tracking-wide font-extrabold text-[13px]">
+                        {item.label}
+                      </span>
+                    </button>
+                  );
+                }
+
+                return (
+                  <button
+                    key={item.id}
+                    onClick={() => setActiveTab(item.id)}
+                    className={`px-4 py-2 rounded-xl text-xs font-semibold transition-all duration-200 ${
+                      activeTab === item.id
+                        ? "bg-[#3C8B5C] text-white shadow-md shadow-[#17663D]/50"
+                        : "text-emerald-100 hover:text-white hover:bg-[#17663D]/60"
+                    }`}
+                  >
+                    <span>{item.label}</span>
+                  </button>
+                );
+              })}
             </nav>
 
             {/* ADMIN STATUS / LOGIN BUTTON */}
@@ -348,22 +368,40 @@ export default function App() {
 
         {/* MOBILE NAVIGATION BAR */}
         <div className="lg:hidden flex overflow-x-auto border-t border-[#0E4A2C] bg-[#0E4A2C] px-4 py-2.5 gap-2 no-scrollbar">
-          {navItems.map((item) => (
-            <button
-              key={item.id}
-              onClick={() => setActiveTab(item.id)}
-              className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition flex items-center gap-1 ${
-                activeTab === item.id
-                  ? item.isSpecial
-                    ? "bg-amber-400 text-slate-950 font-bold"
-                    : "bg-[#3C8B5C] text-white"
-                  : "text-emerald-200 bg-[#0A3520]"
-              }`}
-            >
-              {item.isSpecial && <Icons.Sparkles />}
-              <span>{item.label}</span>
-            </button>
-          ))}
+          {navItems.map((item) => {
+            if (item.isSpecial) {
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => setActiveTab(item.id)}
+                  className={`px-3.5 py-1.5 rounded-full text-xs font-extrabold whitespace-nowrap transition-all flex items-center gap-2 shadow-sm active:scale-95 ${
+                    activeTab === item.id
+                      ? "bg-[#064E2B] text-white ring-2 ring-emerald-400"
+                      : "bg-[#085435] text-white border border-emerald-600/40"
+                  }`}
+                >
+                  <div className="w-4 h-4 rounded-full bg-white p-0.5 flex-shrink-0 flex items-center justify-center">
+                    <img src={cmLogo} alt="CM Seal" className="w-full h-full object-contain" />
+                  </div>
+                  <span className="tracking-wide">{item.label}</span>
+                </button>
+              );
+            }
+
+            return (
+              <button
+                key={item.id}
+                onClick={() => setActiveTab(item.id)}
+                className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition ${
+                  activeTab === item.id
+                    ? "bg-[#3C8B5C] text-white"
+                    : "text-emerald-200 bg-[#0A3520]"
+                }`}
+              >
+                <span>{item.label}</span>
+              </button>
+            );
+          })}
         </div>
       </header>
 
@@ -466,10 +504,6 @@ export default function App() {
 
           <div className="border-t border-[#0E4A2C] pt-6 flex flex-col sm:flex-row items-center justify-between text-xs text-emerald-400/70 gap-4">
             <div>© 2026 College of Maasin — CM HelpHub. All rights reserved.</div>
-            <div className="flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-emerald-400"></span>
-              <span>Powered by React, Express & MongoDB Atlas</span>
-            </div>
           </div>
         </div>
       </footer>
@@ -670,15 +704,15 @@ function HomeView({ offices, faqs, announcements, events, setActiveTab, setGloba
           className="group bg-gradient-to-br from-[#0A3520] via-[#0E4A2C] to-[#17663D] text-white p-6 rounded-3xl border border-[#3C8B5C]/40 shadow-md hover:shadow-xl transition-all duration-300 cursor-pointer flex flex-col justify-between"
         >
           <div>
-            <div className="w-12 h-12 rounded-2xl bg-amber-400/20 text-amber-300 border border-amber-400/30 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-              <Icons.Sparkles />
+            <div className="w-12 h-12 rounded-2xl bg-white p-1 border border-emerald-400/50 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform shadow-md">
+              <img src={cmLogo} alt="CM AI" className="w-full h-full object-contain" />
             </div>
             <h3 className="font-extrabold text-white text-lg">CM AI Assistant</h3>
             <p className="text-xs text-emerald-200 mt-1 leading-relaxed">
               Instant Q&A grounded strictly in verified campus data.
             </p>
           </div>
-          <div className="mt-5 pt-3 border-t border-[#3C8B5C]/40 flex items-center justify-between text-xs font-bold text-amber-300">
+          <div className="mt-5 pt-3 border-t border-[#3C8B5C]/40 flex items-center justify-between text-xs font-bold text-emerald-300">
             <span>Ask AI Now</span>
             <span className="group-hover:translate-x-1 transition-transform"><Icons.ArrowRight /></span>
           </div>
@@ -1021,7 +1055,7 @@ function FaqsView({ faqs, offices, globalSearch, setGlobalSearch, setActiveTab }
             <div className="flex justify-center gap-3 pt-2">
               <button
                 onClick={() => setActiveTab("assistant")}
-                className="bg-amber-400 hover:bg-amber-500 text-slate-950 font-bold text-xs px-4 py-2.5 rounded-xl shadow"
+                className="bg-emerald-800 hover:bg-emerald-900 text-white font-bold text-xs px-4 py-2.5 rounded-xl shadow"
               >
                 Ask CM AI Assistant
               </button>
@@ -1452,10 +1486,29 @@ function AssistantView({ offices, faqs, announcements, setActiveTab }) {
   ]);
   const [query, setQuery] = useState("");
   const [loading, setLoading] = useState(false);
+  
+  // Ref attached directly to the inner chat container
+  const chatContainerRef = React.useRef(null);
+  const isFirstRender = React.useRef(true);
+
+  // Auto-scrolls ONLY the inner chat box without moving the browser page
+  useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
+
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTo({
+        top: chatContainerRef.current.scrollHeight,
+        behavior: "smooth"
+      });
+    }
+  }, [messages, loading]);
 
   const askQuestion = async (promptText) => {
     const q = (promptText || query).trim();
-    if (!q) return;
+    if (!q || loading) return;
 
     setMessages((prev) => [...prev, { sender: "user", text: q }]);
     if (!promptText) setQuery("");
@@ -1474,7 +1527,7 @@ function AssistantView({ offices, faqs, announcements, setActiveTab }) {
           {
             sender: "ai",
             text: data.answer,
-            source: data.source ? `${data.source.type}: ${data.source.title}` : null
+            source: data.source ? `${data.source.type || 'Verified Source'}: ${data.source.title || ''}` : null
           }
         ]);
         setLoading(false);
@@ -1522,91 +1575,149 @@ function AssistantView({ offices, faqs, announcements, setActiveTab }) {
   };
 
   const samplePrompts = [
-    "How do I request a TOR?",
     "Where is the Registrar's Office?",
+    "How do I request a TOR?",
     "Tuition payment channels?",
     "How to connect to campus Wi-Fi?"
   ];
 
   return (
-    <div className="max-w-4xl mx-auto space-y-5">
-      <div className="bg-gradient-to-r from-[#0A3520] via-[#0E4A2C] to-[#17663D] text-white p-7 rounded-3xl shadow-lg border border-[#3C8B5C]/40 flex items-center justify-between">
-        <div className="flex items-center gap-4">
-          <div className="p-3.5 rounded-2xl bg-amber-400/20 text-amber-300 border border-amber-400/30">
-            <Icons.Sparkles />
+    <div className="max-w-4xl mx-auto space-y-4 px-1 sm:px-0">
+      {/* MODERN BRANDED HEADER BANNER */}
+      <div className="relative overflow-hidden bg-gradient-to-r from-[#0A3520] via-[#0E4A2C] to-[#17663D] text-white p-4 sm:p-6 rounded-3xl shadow-xl border border-[#3C8B5C]/40">
+        <div className="relative z-10 flex items-center gap-3.5 sm:gap-4">
+          <div className="relative flex-shrink-0">
+            <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-white p-1 shadow-md shadow-emerald-950/40 flex items-center justify-center border border-[#3C8B5C]">
+              <img
+                src={cmLogo}
+                alt="College of Maasin Seal"
+                className="w-full h-full object-contain"
+              />
+            </div>
+            <span className="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 bg-emerald-400 border-2 border-[#0A3520] rounded-full shadow-sm animate-pulse" />
           </div>
-          <div>
-            <h1 className="text-xl sm:text-2xl font-extrabold">CM AI Grounded Assistant</h1>
-            <p className="text-xs text-emerald-200 mt-0.5">Responses strictly verified against official College of Maasin database records</p>
+          <div className="min-w-0">
+            <div className="flex items-center gap-2 flex-wrap">
+              <h1 className="text-base sm:text-xl font-black tracking-tight text-white">
+                CM Grounded Assistant
+              </h1>
+              <span className="text-[10px] font-extrabold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-400/30">
+                Live Verified
+              </span>
+            </div>
+            <p className="text-xs text-emerald-200/90 truncate sm:whitespace-normal mt-0.5">
+              Verified against official College of Maasin records & Atlas database
+            </p>
           </div>
         </div>
       </div>
 
-      <div className="bg-white rounded-3xl border border-slate-200/80 shadow-sm p-6 flex flex-col h-[520px]">
-        {/* CHAT HISTORY */}
-        <div className="flex-1 overflow-y-auto space-y-4 pr-2">
+      {/* MOBILE-RESPONSIVE CHAT CONTAINER */}
+      <div className="bg-white rounded-3xl border border-slate-200/80 shadow-md p-3 sm:p-6 flex flex-col h-[75vh] sm:h-[620px] max-h-[85vh]">
+        {/* CHAT MESSAGES VIEWPORT */}
+        <div 
+          ref={chatContainerRef}
+          className="flex-1 overflow-y-auto space-y-4 pr-1 sm:pr-2 scroll-smooth"
+        >
           {messages.map((m, idx) => (
-            <div key={idx} className={`flex ${m.sender === "user" ? "justify-end" : "justify-start"}`}>
+            <div
+              key={idx}
+              className={`flex gap-2.5 sm:gap-3.5 ${
+                m.sender === "user" ? "justify-end" : "justify-start"
+              }`}
+            >
+              {/* Bot Logo Avatar */}
+              {m.sender === "ai" && (
+                <div className="flex-shrink-0 w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-white p-0.5 border border-[#3C8B5C]/30 shadow-sm self-start mt-0.5">
+                  <img
+                    src={cmLogo}
+                    alt="CM AI"
+                    className="w-full h-full object-contain"
+                  />
+                </div>
+              )}
+
+              {/* Message Bubble */}
               <div
-                className={`max-w-[85%] rounded-2xl p-4 text-sm leading-relaxed ${
+                className={`max-w-[88%] sm:max-w-[78%] rounded-2xl p-3.5 sm:p-4 text-xs sm:text-sm leading-relaxed shadow-sm ${
                   m.sender === "user"
-                    ? "bg-[#17663D] text-white rounded-br-none shadow-sm"
-                    : "bg-slate-100 text-slate-800 rounded-bl-none border border-slate-200/80"
+                    ? "bg-gradient-to-br from-[#17663D] to-[#0A3520] text-white rounded-tr-xs"
+                    : "bg-slate-50 text-slate-800 rounded-tl-xs border border-slate-200/80"
                 }`}
               >
                 {m.sender === "ai" && (
-                  <div className="flex items-center gap-1.5 text-xs font-extrabold text-[#17663D] mb-1">
-                    <Icons.Bot />
+                  <div className="flex items-center gap-1.5 text-[11px] font-extrabold text-[#17663D] mb-1">
                     <span>CM Grounded AI</span>
                   </div>
                 )}
-                <p>{m.text}</p>
+                
+                <p className="whitespace-pre-line">{m.text}</p>
+
+                {/* Grounded Citation Badge */}
                 {m.source && (
-                  <div className="mt-2.5 pt-2 border-t border-slate-200/80 text-[11px] font-bold text-[#17663D] flex items-center gap-1">
-                    <span>✓ Verified Source:</span>
-                    <span className="bg-white px-2 py-0.5 rounded border border-slate-200">{m.source}</span>
+                  <div className="mt-2.5 pt-2 border-t border-slate-200 flex items-center gap-1.5 text-[10px] sm:text-[11px] font-bold text-[#17663D]">
+                    <svg className="w-3.5 h-3.5 text-emerald-600 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                    </svg>
+                    <span className="truncate">{m.source}</span>
                   </div>
                 )}
               </div>
             </div>
           ))}
+
+          {/* Typing Loading Indicator */}
           {loading && (
-            <div className="text-xs text-slate-400 italic pl-2">Searching verified campus records...</div>
+            <div className="flex items-center gap-2.5 pl-1">
+              <div className="w-8 h-8 rounded-xl bg-white p-0.5 border border-[#3C8B5C]/30 shadow-sm animate-pulse">
+                <img src={cmLogo} alt="CM AI" className="w-full h-full object-contain" />
+              </div>
+              <div className="bg-slate-100 border border-slate-200 px-3.5 py-2.5 rounded-2xl rounded-tl-xs flex items-center gap-1.5 shadow-xs">
+                <span className="w-1.5 h-1.5 bg-[#17663D] rounded-full animate-bounce"></span>
+                <span className="w-1.5 h-1.5 bg-[#17663D] rounded-full animate-bounce [animation-delay:0.2s]"></span>
+                <span className="w-1.5 h-1.5 bg-[#17663D] rounded-full animate-bounce [animation-delay:0.4s]"></span>
+              </div>
+            </div>
           )}
         </div>
 
-        {/* SUGGESTED PILLS */}
-        <div className="flex overflow-x-auto gap-2 py-3 border-t border-slate-100 mt-3 no-scrollbar">
+        {/* TOUCH-FRIENDLY QUICK SUGGESTIONS */}
+        <div className="flex items-center gap-2 overflow-x-auto py-2.5 border-t border-slate-100 mt-2 no-scrollbar touch-pan-x">
+          <span className="text-[11px] font-bold text-slate-400 whitespace-nowrap hidden sm:inline">
+            Suggested:
+          </span>
           {samplePrompts.map((p) => (
             <button
               key={p}
               onClick={() => askQuestion(p)}
-              className="text-xs bg-slate-100 hover:bg-[#0A3520]/10 hover:text-[#17663D] text-slate-700 font-semibold px-3.5 py-1.5 rounded-full whitespace-nowrap transition"
+              disabled={loading}
+              className="text-xs bg-[#0A3520]/5 hover:bg-[#0A3520]/10 text-[#17663D] font-bold px-3.5 py-1.5 rounded-full whitespace-nowrap transition border border-[#3C8B5C]/20 active:scale-95 flex-shrink-0"
             >
               {p}
             </button>
           ))}
         </div>
 
-        {/* INPUT BAR */}
+        {/* INPUT FORM WITH INTEGRATED ASK BUTTON */}
         <form
           onSubmit={(e) => {
             e.preventDefault();
             askQuestion();
           }}
-          className="flex gap-2.5 pt-2"
+          className="relative flex items-center gap-2 pt-1"
         >
           <input
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Ask about TOR, tuition, office locations, or school policies..."
-            className="flex-1 px-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#3C8B5C]"
-            required
+            placeholder="Ask about TOR, tuition, office locations..."
+            disabled={loading}
+            className="w-full pl-4 pr-24 py-3 sm:py-3.5 bg-slate-50 border border-slate-200 rounded-2xl text-xs sm:text-sm text-slate-800 placeholder-slate-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#3C8B5C] focus:border-transparent transition shadow-inner"
           />
           <button
             type="submit"
-            className="bg-amber-400 hover:bg-amber-500 text-slate-950 font-extrabold px-6 py-3 rounded-2xl text-sm transition flex items-center gap-1.5 shadow-md shadow-amber-500/15"
+            disabled={loading || !query.trim()}
+            className="absolute right-1.5 sm:right-2 top-1/2 -translate-y-1/2 bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-500 hover:to-amber-600 text-slate-950 font-extrabold px-4 sm:px-5 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm transition flex items-center gap-1.5 shadow-sm active:scale-95 disabled:opacity-50 disabled:pointer-events-none"
           >
             <span>Ask</span>
             <Icons.Send />
@@ -2066,7 +2177,6 @@ function AdminDashboardView({
         </div>
       )}
 
-      {/* CUSTOM CONFIRMATION DIALOG */}
       {confirmDialog && (
         <div className="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
           <div className="bg-white rounded-3xl shadow-2xl max-w-sm w-full p-6 space-y-4">
