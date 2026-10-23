@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import cmLogo from '../cm.jpg';
+import cmLogo from '../src/cm.jpg';
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL || '/api/helphub';
 
