@@ -471,7 +471,7 @@ app.post('/api/helphub/assistant/ask', async (req, res) => {
     const aiResponse = await axios.post(
       'https://openrouter.ai/api/v1/chat/completions',
       {
-        model: 'openrouter/auto',
+        model: 'openrouter/free',
         messages: [
           { role: 'system', content: campusContext },
           { role: 'user', content: question.trim() }
