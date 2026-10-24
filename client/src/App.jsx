@@ -220,7 +220,7 @@ export default function App() {
 
   const handleAdminUnlock = (e) => {
     e.preventDefault();
-    if (passcodeInput === "admin123" || passcodeInput === "cm2026") {
+    if (passcodeInput === "CmHelpHub2026" || passcodeInput === "cm2026") {
       setAdminPasscode(passcodeInput);
       setIsAdmin(true);
       setShowAdminModal(false);
@@ -228,7 +228,7 @@ export default function App() {
       setActiveTab("admin");
       showToast("Admin session unlocked successfully!", "success");
     } else {
-      showToast("Invalid Admin Passcode! Default is admin123", "error");
+      showToast("Invalid Admin Passcode", "error");
     }
   };
 
@@ -534,7 +534,7 @@ export default function App() {
                   type="password"
                   value={passcodeInput}
                   onChange={(e) => setPasscodeInput(e.target.value)}
-                  placeholder="Enter passcode (default: admin123)"
+                  placeholder="Enter passcode"
                   className="w-full px-4 py-3 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#3C8B5C] focus:border-transparent transition"
                   autoFocus
                 />
