@@ -1491,6 +1491,16 @@ function AssistantView({ offices, faqs, announcements, setActiveTab }) {
   const chatContainerRef = React.useRef(null);
   const isFirstRender = React.useRef(true);
 
+  // Helper: Cleans markdown asterisks and converts raw list markers to clean bullets
+  const formatCleanMessage = (rawText) => {
+    if (!rawText) return "";
+    return rawText
+      .replace(/\*\*/g, "")               // Strips bold markdown (**word**)
+      .replace(/^\s*[\*\-]\s+/gm, "• ")   // Converts "* item" or "- item" to "• item"
+      .replace(/•\s*•/g, "•")            // Prevents double bullet markers
+      .trim();
+  };
+
   // Auto-scrolls ONLY the inner chat box without moving the browser page
   useEffect(() => {
     if (isFirstRender.current) {
@@ -1526,7 +1536,7 @@ function AssistantView({ offices, faqs, announcements, setActiveTab }) {
           ...prev,
           {
             sender: "ai",
-            text: data.answer,
+            text: formatCleanMessage(data.answer),
             source: data.source ? `${data.source.type || 'Verified Source'}: ${data.source.title || ''}` : null
           }
         ]);
@@ -1549,14 +1559,18 @@ function AssistantView({ offices, faqs, announcements, setActiveTab }) {
       if (faqMatch) {
         setMessages((prev) => [
           ...prev,
-          { sender: "ai", text: faqMatch.answer, source: `FAQ Record: ${faqMatch.question}` }
+          { 
+            sender: "ai", 
+            text: formatCleanMessage(faqMatch.answer), 
+            source: `FAQ Record: ${faqMatch.question}` 
+          }
         ]);
       } else if (offMatch) {
         setMessages((prev) => [
           ...prev,
           {
             sender: "ai",
-            text: `${offMatch.officeName} is located at ${offMatch.location}. Hours: ${offMatch.officeHours}. Email: ${offMatch.contactEmail}.`,
+            text: formatCleanMessage(`${offMatch.officeName} is located at ${offMatch.location}. Hours: ${offMatch.officeHours}. Email: ${offMatch.contactEmail}.`),
             source: `Office Directory: ${offMatch.officeName}`
           }
         ]);
@@ -1565,7 +1579,7 @@ function AssistantView({ offices, faqs, announcements, setActiveTab }) {
           ...prev,
           {
             sender: "ai",
-            text: `I could not locate verified campus records matching "${q}". Please check the Office Directory or submit an official student concern.`,
+            text: formatCleanMessage(`I could not locate verified campus records matching "${q}". Please check the Office Directory or submit an official student concern.`),
             source: null
           }
         ]);
@@ -1598,7 +1612,7 @@ function AssistantView({ offices, faqs, announcements, setActiveTab }) {
           </div>
           <div className="min-w-0">
             <div className="flex items-center gap-2 flex-wrap">
-              <h1 className="text-base sm:text-xl font-black tracking-tight text-white">
+              <h1 className="text-base sm:xl font-black tracking-tight text-white">
                 CM Grounded Assistant
               </h1>
               <span className="text-[10px] font-extrabold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-400/30">
@@ -1651,7 +1665,10 @@ function AssistantView({ offices, faqs, announcements, setActiveTab }) {
                   </div>
                 )}
                 
-                <p className="whitespace-pre-line">{m.text}</p>
+                {/* Render formatted clean text */}
+                <p className="whitespace-pre-line leading-relaxed">
+                  {formatCleanMessage(m.text)}
+                </p>
 
                 {/* Grounded Citation Badge */}
                 {m.source && (
